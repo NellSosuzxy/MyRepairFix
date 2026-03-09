@@ -1,0 +1,148 @@
+<!-- 
+======================================
+CONFIRMATION.HTML - Booking Success Page
+======================================
+Purpose: Displays booking confirmation with reference code
+Features:
+- Shows unique reference code (from URL parameter: ?ref=XXX)
+- Printable ticket for customer records
+- Links to homepage and status checker
+- Reference code needed for status tracking
+Accessed via: booking.js redirects here after successful booking
+====================================== 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Character encoding -->
+    <meta charset="UTF-8">
+    <!-- Responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Page title -->
+    <title>Booking Confirmed - MyRepairFix</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo1.png">
+
+    <!-- Google Fonts - Inter font family -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Confirmation page-specific styles (ticket, reference code, print layout) -->
+    <link rel="stylesheet" href="css/confirmation.css">
+ 
+</head>
+
+<body class="confirmation-page">
+
+    <!-- ==================== SUCCESS MESSAGE ==================== -->
+    <h1 data-i18n="confirm_title">Booking Received!</h1>
+
+    <!-- ==================== REFERENCE CODE TICKET ==================== -->
+    <!-- 
+        Printable ticket showing unique reference code
+        Reference code extracted from URL parameter by confirmation.js
+        Customer needs this code to check repair status
+    -->
+    <div class="ticket">
+        <h3 data-i18n="confirm_ticket_title">MyRepairFix Ticket</h3>
+        <p data-i18n="confirm_save_code">Please save this code to check your status:</p>
+        
+        <!-- 
+            Reference code display
+            Populated by confirmation.js from URL parameter (?ref=XXX)
+            Initially shows "Loading..." until JavaScript executes
+        -->
+        <div class="ref-code" id="displayRef">Loading...</div>
+        
+        <p data-i18n="confirm_keep_safe">Keep this ticket safe!</p>
+        
+        <!-- Print button (triggers browser print dialog) -->
+        <button id="printBtn" data-i18n="confirm_print">Print Ticket</button>
+    </div>
+
+    <!-- Navigation links -->
+    <!-- Navigation links -->
+    <p><a href="index.html" data-i18n="confirm_back_home">Back to Home</a> | <a href="status.html" data-i18n="confirm_check_status">Check Status</a></p>
+
+    <!-- ==================== PRINT ONLY INVOICE ==================== -->
+    <div id="print-invoice" style="display: none;">
+        <div class="invoice-header">
+            <div class="company-details">
+                <h1>MyRepairFix</h1>
+                <p>Johor Bahru, Malaysia</p>
+                <p>Support: 01174860640</p>
+                <p>www.myrepairfix.com</p>
+            </div>
+            <div class="invoice-meta">
+                <h2 data-i18n="print_service_ticket">SERVICE TICKET</h2>
+                <div class="meta-row">
+                    <span data-i18n="print_date">Date:</span>
+                    <span id="print-date"></span>
+                </div>
+                <div class="meta-row">
+                    <span data-i18n="print_ticket_no">Ticket #:</span>
+                    <span class="print-ref-code"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="invoice-body">
+            <div class="invoice-section">
+                <h3 data-i18n="print_booking_conf">Booking Confirmation</h3>
+                <p data-i18n="print_conf_msg">Thank you for choosing MyRepairFix. Your service request has been received.</p>
+                <div class="ref-box">
+                    <span class="label" data-i18n="print_ref_code">Reference Code:</span>
+                    <span class="code print-ref-code"></span>
+                </div>
+                <p class="instruction" data-i18n="print_keep_ticket">Please keep this ticket for your records. You will need the reference code above to check the status of your repair.</p>
+            </div>
+
+            <div class="invoice-section">
+                <h3 data-i18n="print_next_steps">Next Steps</h3>
+                <ol>
+                    <li data-i18n="print_step_1">Bring your device to our service center.</li>
+                    <li data-i18n="print_step_2">Show this ticket or reference code to our staff.</li>
+                    <li><span data-i18n="print_step_3_pre">Track your repair status online at</span> <strong>myrepairfix.com/status</strong>.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="invoice-footer">
+            <p data-i18n="print_thanks">Thank you for your business!</p>
+            <p class="small">MyRepairFix &copy; <span id="print-year"></span></p>
+        </div>
+    </div>
+
+    <!-- ==================== CHATBOT WIDGET ==================== -->
+    <!-- Same chatbot widget used across all pages -->
+    <div id="chatbot-container">
+        <button id="chatbot-toggle">💬</button>
+        <div id="chatbot-window">
+            <div class="chatbot-header">
+                <span data-i18n="chatbot_title">MyRepairFix Helper</span>
+                <span id="chatbot-close-btn" style="cursor:pointer; float:right;">✕</span>
+            </div>
+            <div id="chatbot-messages">
+                <p><strong data-i18n="chatbot_bot">Bot:</strong> <span data-i18n="chatbot_greeting">Hello! How can I help you today?</span></p>
+            </div>
+            <div class="chatbot-input-area">
+                <input type="text" id="chat-input" data-i18n-placeholder="chatbot_placeholder" placeholder="Ask about hours, price...">
+                <button class="chatbot-send-btn" data-i18n="chatbot_send">Send</button>
+            </div>
+        </div>
+    </div>
+    <!-- End of chatbot-container -->
+
+    <!-- ==================== JAVASCRIPT FILES ==================== -->
+    <!-- Global functionality (chatbot only - no theme/language on this page) -->
+    <script src="js/data/translations.js"></script>
+    <script src="js/global.js"></script>
+    <!-- Page-specific functionality (extracts ref code from URL) -->
+    <script src="js/pages/confirmation.js"></script>
+
+</body>
+
+</html>

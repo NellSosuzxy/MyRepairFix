@@ -1,0 +1,267 @@
+<!-- 
+======================================
+ADMIN.HTML - Admin Dashboard Page
+======================================
+Purpose: Administrative panel for managing customer repair bookings
+Features:
+- Password-protected login overlay (password: admin123)
+- View all bookings in a table
+- Update booking status (Pending → In Progress → Completed)
+- Real-time status updates
+- Fetches data from GET /api/admin/bookings
+- Updates via PUT /api/admin/bookings/:id
+Security Note: This is a basic password system for demo purposes
+====================================== 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Character encoding -->
+    <meta charset="UTF-8">
+    <!-- Responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Page title -->
+    <title>Owner Dashboard - MyRepairFix</title>
+    
+    <!-- Prevent search engines from indexing admin page -->
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2563eb">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo1.png">
+    
+    <!-- Google Fonts - Inter font family -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Main stylesheet (includes admin.css for table styles) -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Admin-specific styles (login overlay, table, status dropdown) -->
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/admin-extra.css"> <!-- New styles for tabs -->
+    <!-- Image gallery and upload styles (preview grids, modals, image cards) -->
+    <link rel="stylesheet" href="css/image-gallery.css">
+    <script src="js/utils/toast.js"></script>
+</head>
+
+<body>
+
+    <!-- ==================== LOGIN OVERLAY ==================== -->
+    <!-- 
+        Password protection layer
+        Covers entire page until correct password entered
+        Password is checked in admin.js (hardcoded as "admin123")
+        On success: overlay hidden, dashboard visible
+    -->
+    <div id="loginOverlay">
+        <div class="text-center">
+            <h2>Admin Login</h2>
+            <input type="text" id="adminUser" placeholder="Username" style="display:block; width: 220px; margin: 20px auto; padding: 10px;">
+            <!-- Password input field -->
+            <input type="password" id="adminPass" placeholder="Password" style="display:block; width: 220px; margin: 20px auto; padding: 10px;">
+            <!-- Login button (triggers checkPass() in admin.js) -->
+            <button id="loginBtn">Login</button>
+        </div>
+    </div>
+
+    <!-- ==================== ADMIN DASHBOARD ==================== -->
+    <!-- Main content (hidden until login successful) -->
+    
+    <!-- Admin Header with Controls -->
+    <header class="admin-header" style="flex-direction: column; align-items: start; gap:10px;">
+        <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+             <div class="header-title">
+                <h1 data-i18n="admin_dashboard_title">Owner Dashboard</h1>
+                <p data-i18n="admin_manage_repairs">Manage incoming repairs here.</p>
+            </div>
+            <div class="header-controls">
+                 <!-- Online User Badge with Dropdown -->
+                <div style="position: relative;">
+                    <span id="online-staff-badge" style="background:var(--success-color); color:white; padding:5px 12px; border-radius:15px; font-weight:600; font-size:0.85rem; margin-right:15px; display:inline-flex; align-items:center; cursor: pointer;">
+                        <!-- Clear visual dot instead of unicode char -->
+                        <span style="display:inline-block; width:8px; height:8px; background-color:white; border-radius:50%; margin-right:8px;"></span>
+                        Online: <span id="online-count" style="margin-left:4px;">1</span>
+                    </span>
+                    <!-- Dropdown List -->
+                    <div id="staff-dropdown" style="display: none; position: absolute; top: 100%; right: 0; background: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); width: 200px; z-index: 1000; margin-top: 5px;">
+                        <ul id="online-staff-list" style="list-style: none; padding: 0; margin: 0; max-height: 200px; overflow-y: auto;">
+                            <!-- Staff items injected here -->
+                            <li style="padding:10px; text-align:center; color:#666;">Loading...</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Theme toggle with custom icon -->
+                <button class="btn-icon theme-toggle" aria-label="Toggle theme">
+                    <svg class="theme-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g class="sun-rays">
+                            <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </g>
+                    <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+                    <path class="moon-crescent" d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9c.32 0 .63-.02.94-.06A7 7 0 0 1 9 14c0-3.87 3.13-7 7-7 .32 0 .63.02.94.06C16.42 4.56 14.35 3 12 3z" fill="currentColor"/>
+                </svg>
+            </button>
+            <!-- Language toggle -->
+            <button class="btn-icon lang-toggle">EN | MY</button>
+            <button id="logoutBtn" class="btn-logout">Logout</button>
+        </div>
+    </header>
+
+    <!-- OWNER CONTROL PANEL (Hidden by default) -->
+    <div id="owner-panel" class="owner-panel" style="display: none;">
+        <h3 data-i18n="owner_panel_title">Owner Control Panel</h3>
+        
+        <div class="owner-controls-wrapper">
+            <!-- Add New Staff Section -->
+            <div class="owner-control-section">
+                <p><strong data-i18n="owner_add_staff_label">Add new staff member:</strong></p>
+                <div class="control-group">
+                    <input type="text" id="new-staff-user" data-i18n-placeholder="owner_new_username_placeholder" placeholder="New Username">
+                    <input type="password" id="new-staff-pass" data-i18n-placeholder="owner_new_password_placeholder" placeholder="New Password">
+                    <button id="addStaffBtn" class="btn-primary" data-i18n="owner_add_staff_btn">Add Staff</button>
+                </div>
+                <p id="add-msg" class="status-msg"></p>
+            </div>
+
+            <!-- Reset Password Section -->
+            <div class="owner-control-section border-left">
+                <p><strong data-i18n="owner_reset_pass_label">Reset Staff Password:</strong></p>
+                <div class="control-group">
+                    <input type="text" id="reset-target-user" data-i18n-placeholder="owner_staff_username_placeholder" placeholder="Staff Username">
+                    <input type="password" id="reset-new-pass" data-i18n-placeholder="owner_new_password_placeholder" placeholder="New Password">
+                    <button id="resetStaffBtn" class="btn-warning" data-i18n="owner_reset_btn">Reset Pass</button>
+                </div>
+                <p id="reset-msg" class="status-msg"></p>
+            </div>
+        </div>
+
+        <!-- Staff List Section -->
+        <div class="staff-list-section" style="margin-top: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h4 data-i18n="staff_list_title" style="margin: 0;">Staff List</h4>
+                <button id="refreshStaffBtn" class="btn-refresh" style="padding: 8px 16px; font-size: 0.85rem; background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer;">
+                    <span data-i18n="refresh_btn">Refresh</span>
+                </button>
+            </div>
+            <div id="staff-list-container" style="max-height: 300px; overflow-y: auto;">
+                <table class="staff-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                    <thead>
+                        <tr style="background: var(--bg-tertiary);">
+                            <th style="padding: 10px; text-align: center;" data-i18n="staff_col_id">ID</th>
+                            <th style="padding: 10px; text-align: center;" data-i18n="staff_col_username">Username</th>
+                            <th style="padding: 10px; text-align: center;" data-i18n="staff_col_role">Role</th>
+                            <th style="padding: 10px; text-align: center;" data-i18n="staff_col_created">Created</th>
+                            <th style="padding: 10px; text-align: center;" data-i18n="staff_col_action">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="staff-table-body">
+                        <tr><td colspan="5" style="text-align: center; padding: 20px;" data-i18n="staff_loading">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+        Bookings Management Table
+        Populated dynamically by admin.js from GET /api/admin/bookings
+        Shows all customer bookings with update controls
+    -->
+    <table>
+        <thead>
+            <tr>
+                <th data-i18n="admin_table_id">ID</th>
+                <th data-i18n="admin_table_date">Date</th>
+                <th data-i18n="admin_table_customer">Customer</th>
+                <th data-i18n="admin_table_device">Device</th>
+                <th data-i18n="admin_table_issue">Issue</th>
+                <th data-i18n="admin_table_status">Status</th>
+                <th data-i18n="admin_table_action">Action</th>
+                <th data-i18n="admin_table_images">Upload</th>
+            </tr>
+        </thead>
+        <!-- Table body populated by JavaScript -->
+        <tbody id="bookingTable">
+        </tbody>
+    </table>
+
+    <!-- ==================== IMAGE MANAGEMENT MODAL ==================== -->
+    <!-- Modal for viewing and uploading images for a specific booking -->
+    <div id="imageModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal" id="closeImageModalBtn">&times;</span>
+            <h2 data-i18n="modal_manage_images">Manage Booking Images</h2>
+            
+            <!-- Booking Info -->
+            <div id="modal-booking-info" class="booking-info"></div>
+            
+            <!-- Image Stages Container -->
+            <div class="image-stages-container">
+                
+                <!-- Before Service Images (Read-Only, Customer Uploaded) -->
+                <div class="image-stage">
+                    <h3 data-i18n="stage_before_service">Before Service (Customer)</h3>
+                    <div id="before-images-display" class="images-display">
+                        <p class="no-images" data-i18n="no_images_uploaded">No images uploaded</p>
+                    </div>
+                </div>
+
+                <!-- Received Condition Images (Admin Upload) -->
+                <div class="image-stage">
+                    <h3 data-i18n="stage_received_condition">Received Condition (Admin)</h3>
+                    <div id="received-images-display" class="images-display">
+                        <p class="no-images" data-i18n="no_images_uploaded">No images uploaded</p>
+                    </div>
+                    <div id="received-upload-section" class="upload-section">
+                        <input type="file" id="received-upload" accept="image/*" multiple class="file-input">
+                        <button id="uploadReceivedBtn" data-i18n="btn_upload_images">Upload Images</button>
+                    </div>
+                    <!-- Preview Container -->
+                    <div id="received-preview" class="image-preview-grid"></div>
+                </div>
+
+                <!-- After Service Images (Admin Upload) -->
+                <div class="image-stage">
+                    <h3 data-i18n="stage_after_service">After Service (Admin)</h3>
+                    <div id="after-images-display" class="images-display">
+                        <p class="no-images" data-i18n="no_images_uploaded">No images uploaded</p>
+                    </div>
+                    <div id="after-upload-section" class="upload-section">
+                        <input type="file" id="after-upload" accept="image/*" multiple class="file-input">
+                        <button id="uploadAfterBtn" data-i18n="btn_upload_images">Upload Images</button>
+                    </div>
+                    <!-- Preview Container -->
+                    <div id="after-preview" class="image-preview-grid"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT FILES ==================== -->
+    <script src="js/utils/image-component.js"></script>
+    <script src="js/utils/api.js"></script>
+    
+    <!-- Core & Shared Functions -->
+    <script src="js/data/translations.js"></script> <!-- MUST BE LOADED BEFORE global.js -->
+    <script src="js/global.js"></script>
+    
+    <!-- Admin & Dashboard Logic -->
+    <script src="js/auth/auth.js"></script>
+    <script src="js/dashboard/dashboard-shared.js"></script>
+    <script src="js/dashboard/owner-controls.js"></script>
+    
+</body>
+
+</html>

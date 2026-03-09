@@ -1,0 +1,242 @@
+<!-- 
+======================================
+BOOKING.HTML - Repair Booking Form Page
+======================================
+Purpose: Customer booking form for device repair services
+Features:
+- Customer information collection (name, email, phone)
+- Device details selection (type, model, issue category)
+- Preferred date/time picker
+- Form validation
+- Multi-language support (English/Malay)
+- Dark mode compatible
+- Submission to backend API (POST /api/bookings)
+====================================== 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Character encoding -->
+    <meta charset="UTF-8">
+    <!-- Responsive viewport for mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Page title (appears in browser tab) -->
+    <title>MyRepairFix - Book a Repair</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Book your device repair appointment online. Fast and easy scheduling for smartphone and laptop repairs.">
+    <meta name="robots" content="index, follow">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2563eb">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/logo1.png">
+    
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" href="images/logo1.png">
+
+    <!-- Google Fonts - Inter font family -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Main stylesheet (includes theme variables and global styles) -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Booking form-specific styles (enhanced inputs, validation, custom selects) -->
+    <link rel="stylesheet" href="css/booking.css">
+    <!-- Image gallery and upload styles (preview grids, modals, image cards) -->
+    <link rel="stylesheet" href="css/image-gallery.css">
+
+</head>
+
+<body class="booking-page">
+
+<!-- ==================== HEADER WITH NAVIGATION ==================== -->
+<!-- Mobile menu overlay (dark backdrop when menu is open) -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<header>
+    <!-- Logo and site title -->
+    <div class="flex-center gap-small">
+        <img src="images/logo1.png" alt="MyRepairFix Logo" class="logo-header" style="opacity: 1;">
+        <h1>MyRepairFix</h1>
+    </div>
+    
+    <!-- Hamburger menu button (mobile only) -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
+    <!-- Navigation menu with theme/language toggles -->
+    <nav id="navMenu">
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="booking.html" data-i18n="nav_book">Book Now</a>
+        <a href="status.html" data-i18n="nav_status">Check Status</a>
+        <!-- Theme toggle button -->
+        <button class="btn-icon theme-toggle" aria-label="Toggle theme">
+            <svg class="theme-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g class="sun-rays">
+                    <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </g>
+                <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path class="moon-crescent" d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9c.32 0 .63-.02.94-.06A7 7 0 0 1 9 14c0-3.87 3.13-7 7-7 .32 0 .63.02.94.06C16.42 4.56 14.35 3 12 3z" fill="currentColor"/>
+            </svg>
+        </button>
+        <!-- Language toggle button -->
+        <button class="btn-icon lang-toggle">EN | MY</button>
+    </nav>
+</header>
+
+<!-- ==================== BOOKING FORM CONTAINER ==================== -->
+<div class="container">
+    <!-- Page title with i18n support -->
+    <h2 data-i18n="booking_title">Book a Repair</h2>
+
+    <!-- 
+        Booking Form
+        Submits to backend via booking.js (POST /api/bookings)
+        On success: redirects to confirmation.html with reference code
+    -->
+    <form id="bookingForm">
+        
+        <!-- ========== Customer Information Section ========== -->
+        <!-- Full Name Field -->
+        <div class="form-group">
+            <label for="customer_name" data-i18n="form_name">Full Name</label>
+            <input type="text" id="customer_name" name="customer_name" required>
+        </div>
+        
+        <!-- Email Field -->
+        <div class="form-group">
+            <label for="email" data-i18n="form_email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        
+        <!-- Phone Number Field -->
+        <div class="form-group">
+            <label for="phone" data-i18n="form_phone">Phone Number</label>
+            <input type="text" id="phone" name="phone" required>
+        </div>
+
+        <!-- ========== Device Information Section ========== -->
+        <!-- Device Type Dropdown (Smartphone/Laptop) -->
+        <div class="form-group">
+            <label for="device_type" data-i18n="form_device_type">Device Type</label>
+            <select id="device_type" name="device_type">
+                <option value="Smartphone" data-i18n="device_smartphone">Smartphone</option>
+                <option value="Laptop" data-i18n="device_laptop">Laptop</option>
+            </select>
+        </div>
+        
+        <!-- Device Model Field (e.g., iPhone 13, Dell XPS) -->
+        <div class="form-group">
+            <label for="device_model" data-i18n="form_device_model">Device Model (e.g. iPhone 13, Dell XPS)</label>
+            <input type="text" id="device_model" name="device_model" required>
+        </div>
+
+        <!-- ========== Issue Information Section ========== -->
+        <!-- Issue Category Dropdown -->
+        <div class="form-group">
+            <label for="issue_category" data-i18n="form_issue_category">Issue Category</label>
+            <select id="issue_category" name="issue_category">
+                <option value="Screen" data-i18n="issue_screen">Screen</option>
+                <option value="Battery" data-i18n="issue_battery">Battery</option>
+                <option value="Water Damage" data-i18n="issue_water">Water Damage</option>
+                <option value="Keyboard" data-i18n="issue_keyboard">Keyboard</option>
+                <option value="OS/Software" data-i18n="issue_software">OS/Software</option>
+                <option value="Other" data-i18n="issue_other">Other</option>
+            </select>
+        </div>
+        
+        <!-- Issue Description Textarea -->
+        <div class="form-group">
+            <label for="issue_desc" data-i18n="form_issue_desc">Description of Problem</label>
+            <textarea id="issue_desc" name="issue_desc" rows="3"></textarea>
+        </div>
+
+        <!-- ========== Scheduling Section ========== -->
+        <!-- Preferred Date & Time Picker -->
+        <div class="form-group">
+            <label for="preferred_date" data-i18n="form_preferred_date">Preferred Date & Time</label>
+            <input type="datetime-local" id="preferred_date" name="preferred_date" required>
+        </div>
+
+        <!-- ========== Image Upload Section ========== -->
+        <!-- Before Service Images (Customer Upload) -->
+        <div class="form-group image-upload-section">
+            <label data-i18n="form_before_images">Upload Device Images (Optional)</label>
+            <p class="form-help" data-i18n="form_before_images_help">Upload photos showing the damage/issue (Max 5 images, 5MB each)</p>
+            
+            <!-- File input -->
+            <input type="file" id="before_service_images" name="before_service_images" accept="image/*" multiple class="file-input">
+            
+            <!-- Image preview area -->
+            <div id="image-preview-container" class="image-preview-grid"></div>
+        </div>
+
+        <!-- Submit Button (triggers booking.js form handler) -->
+        <button type="submit" data-i18n="form_submit">Submit Booking</button>
+    </form>
+</div>
+<!-- End of container -->
+
+    <!-- ==================== CHATBOT WIDGET ==================== -->
+    <!-- 
+        Floating chatbot helper widget
+        Features:
+        - Fixed position in bottom-right corner
+        - Toggle open/close with 💬 button
+        - Keyword-based auto-responses (hours, price, booking)
+    -->
+    <div id="chatbot-container">
+        <!-- Chatbot toggle button (💬 icon) -->
+        <button id="chatbot-toggle">💬</button>
+        
+        <!-- Chatbot window (hidden by default via CSS) -->
+        <div id="chatbot-window">
+            <!-- Chatbot header with title and close button -->
+            <div class="chatbot-header">
+                <span data-i18n="chatbot_title">MyRepairFix Helper</span>
+                <!-- Close button (✕ symbol) -->
+                <span id="chatbot-close-btn" style="cursor:pointer; float:right;">✕</span>
+            </div>
+            
+            <!-- Message display area -->
+            <div id="chatbot-messages">
+                <!-- Initial greeting message -->
+                <p><strong data-i18n="chatbot_bot">Bot:</strong> <span data-i18n="chatbot_greeting">Hello! How can I help you today?</span></p>
+            </div>
+            
+            <!-- Input area for user messages -->
+            <div class="chatbot-input-area">
+                <!-- Text input for user questions -->
+                <input type="text" id="chat-input" data-i18n-placeholder="chatbot_placeholder" placeholder="Ask about hours, price...">
+                <!-- Send button (triggers sendChat() from global.js) -->
+                <button class="chatbot-send-btn" data-i18n="chatbot_send">Send</button>
+            </div>
+        </div>
+    </div>
+    <!-- End of chatbot-container -->
+
+    <!-- ==================== JAVASCRIPT FILES ==================== -->
+    <!-- Image component utilities -->
+    <script src="js/utils/image-component.js"></script>
+    <!-- Global functionality (theme, language, chatbot) -->
+    <script src="js/data/translations.js"></script>
+    <script src="js/global.js"></script>
+    <!-- Page-specific functionality (form submission, validation) -->
+    <script src="js/pages/booking.js"></script>
+       
+
+</body>
+
+</html>

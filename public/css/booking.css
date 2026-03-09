@@ -1,0 +1,327 @@
+/* 
+======================================
+BOOKING.CSS - Booking Form Styles
+======================================
+Purpose: Styles specific to booking.html (repair booking form)
+Features:
+- Enhanced form styling
+- Form validation states
+- Device type and issue category dropdowns
+- Date/time picker styling
+- Responsive form layout
+Dependencies: Requires style.css (loaded first)
+====================================== 
+*/
+
+/* ==================== FORM CONTAINER ==================== */
+/**
+ * Main form wrapper
+ * Centers the form and provides consistent spacing
+ */
+.container {
+    max-width: 600px;                       /* Narrower for form readability */
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.container h2 {
+    color: var(--text-main);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+/* ==================== FORM GROUPS ==================== */
+/**
+ * Form group containers for label + input pairs
+ * Provides consistent spacing and layout
+ */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+/* ==================== INPUT FIELDS ==================== */
+/**
+ * Enhanced input styling with focus states
+ * Extends base input styles from style.css
+ */
+input[type="text"],
+input[type="email"],
+input[type="datetime-local"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-body);
+    color: var(--text-main);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Focus state - blue glow ring */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background: var(--bg-card);
+}
+
+/* Textarea specific styling */
+textarea {
+    resize: vertical;                       /* Allow vertical resize only */
+    min-height: 100px;
+    line-height: 1.5;
+}
+
+/* ==================== SELECT DROPDOWNS ==================== */
+/**
+ * Custom select dropdown styling
+ * Device type and issue category selectors
+ */
+select {
+    cursor: pointer;
+    appearance: none;                       /* Remove default browser styling */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;                  /* Space for dropdown arrow */
+}
+
+/* Dark mode dropdown arrow */
+[data-theme="dark"] select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+}
+
+select option {
+    background: var(--bg-card);
+    color: var(--text-main);
+    padding: 0.5rem;
+}
+
+/* ==================== DATE/TIME PICKER ==================== */
+/**
+ * Enhanced datetime-local input
+ * Browser native date/time picker
+ */
+input[type="datetime-local"] {
+    cursor: pointer;
+}
+
+/* Calendar icon styling (browser-specific) */
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: brightness(0.8);
+}
+
+[data-theme="dark"] input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+/* ==================== FORM VALIDATION STATES ==================== */
+/**
+ * Visual feedback for required fields and validation
+ * Uses HTML5 validation states
+ */
+
+/* Invalid field styling */
+input:invalid:not(:placeholder-shown),
+select:invalid:not(:placeholder-shown),
+textarea:invalid:not(:placeholder-shown) {
+    border-color: #ef4444;                  /* Red border for errors */
+}
+
+/* Valid field styling (optional - can be removed if too distracting) */
+input:valid:not(:placeholder-shown),
+select:valid:not(:placeholder-shown),
+textarea:valid:not(:placeholder-shown) {
+    border-color: var(--border);            /* Keep normal border */
+}
+
+/* Required field indicator */
+label::after {
+    content: "";                            /* No asterisk by default */
+}
+
+/* You can add asterisks to required fields if desired:
+   input[required] + label::after { content: " *"; color: #ef4444; }
+*/
+
+/* ==================== SUBMIT BUTTON ==================== */
+/**
+ * Primary action button for form submission
+ * Extends base button styles from style.css
+ */
+button[type="submit"] {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    padding: 1rem;
+    border: none;
+    border-radius: 50px;                    /* Pill shape */
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-top: 1rem;
+}
+
+button[type="submit"]:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+}
+
+/* Disabled state */
+button[type="submit"]:disabled {
+    background: var(--text-muted);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* ==================== FORM HELPER TEXT ==================== */
+/**
+ * Helper text and error messages
+ */
+.form-hint {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.form-error {
+    font-size: 0.85rem;
+    color: #ef4444;
+    margin-top: 0.25rem;
+    display: none;                          /* Hidden by default, shown by JS */
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+/**
+ * Mobile optimizations for better touch experience
+ */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+    
+    .container h2 {
+        font-size: 1.5rem;
+    }
+    
+    input,
+    select,
+    textarea {
+        font-size: 16px;                    /* Prevents iOS zoom on focus */
+    }
+    
+    button[type="submit"] {
+        padding: 1.25rem;                   /* Larger touch target */
+    }
+}
+
+/* ==================== DARK MODE OPTIMIZATIONS ==================== */
+/**
+ * Enhanced dark mode styling for better contrast and readability
+ * Ensures form is comfortable to use in dark environments
+ */
+[data-theme="dark"] .container {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+[data-theme="dark"] input[type="text"],
+[data-theme="dark"] input[type="email"],
+[data-theme="dark"] input[type="datetime-local"],
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+    background: var(--bg-body);
+    border-color: var(--border);
+    color: var(--text-main);
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] select:focus,
+[data-theme="dark"] textarea:focus {
+    background: rgba(59, 130, 246, 0.05);   /* Subtle blue tint */
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+/* Dark mode select options */
+[data-theme="dark"] select option {
+    background: var(--bg-body);
+    color: var(--text-main);
+}
+
+/* Dark mode validation states */
+[data-theme="dark"] input:invalid:not(:placeholder-shown),
+[data-theme="dark"] select:invalid:not(:placeholder-shown),
+[data-theme="dark"] textarea:invalid:not(:placeholder-shown) {
+    border-color: #f87171;                  /* Lighter red for dark mode */
+    background: rgba(239, 68, 68, 0.05);
+}
+
+/* Dark mode button hover */
+[data-theme="dark"] button[type="submit"]:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Dark mode disabled button */
+[data-theme="dark"] button[type="submit"]:disabled {
+    background: var(--border);
+    color: var(--text-muted);
+}
+
+/* Dark mode form labels */
+[data-theme="dark"] .form-group label {
+    color: var(--text-main);
+}
+
+/* Dark mode helper text */
+[data-theme="dark"] .form-hint {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .form-error {
+    color: #fca5a5;                         /* Lighter red for dark mode */
+}
+
+/* Dark mode autofill background fix (prevents yellow background) */
+[data-theme="dark"] input:-webkit-autofill,
+[data-theme="dark"] input:-webkit-autofill:hover,
+[data-theme="dark"] input:-webkit-autofill:focus,
+[data-theme="dark"] select:-webkit-autofill,
+[data-theme="dark"] select:-webkit-autofill:hover,
+[data-theme="dark"] select:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-main);
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-body) inset;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transition: background-color 5000s ease-in-out 0s;
+}

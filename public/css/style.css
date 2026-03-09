@@ -1,0 +1,1746 @@
+/* 
+======================================
+STYLE.CSS - Main Stylesheet
+======================================
+Purpose: Core styling for MyRepairFix website
+Features:
+- CSS Variables for theme system (light/dark mode)
+- Modern glass-morphism navigation
+- Responsive design (mobile-friendly)
+- Smooth animations and transitions
+- Consistent spacing and typography
+
+ORGANIZATION:
+- variables.css: CSS custom properties and theme system
+- utilities.css: Common utility classes
+- This file: Component-specific styles
+
+Structure:
+1. CSS Variables & Theme System (imported from variables.css)
+2. Navigation (Sticky header with blur effect)
+3. Cards & Containers
+4. Forms & Inputs
+5. Buttons
+6. Hero Section
+7. Chatbot Widget
+8. Animations (Fade, Pulse, Shimmer)
+9. Preloader
+10. Gallery
+11. News Widget
+12. Utilities (imported from utilities.css)
+====================================== 
+*/
+
+/* Import organized CSS modules */
+@import url('variables.css');
+@import url('utilities.css');
+
+/* ==================== 1. GLOBAL RESET & CSS VARIABLES ==================== */
+/**
+ * CSS Custom Properties (Variables) for Theme System
+ * These variables are used throughout the stylesheet
+ * Benefits:
+ * - Easy theme switching (just change values in [data-theme="dark"])
+ * - Consistent colors across entire site
+ * - DRY principle (Don't Repeat Yourself)
+ * Usage: color: var(--primary); or background: var(--bg-card);
+ */
+:root {
+    /* ===== Light Mode Color Palette ===== */
+    --primary: #2563eb;              /* Modern Blue - Primary brand color */
+    --primary-hover: #1d4ed8;        /* Darker blue for hover states */
+    --bg-body: #f8fafc;              /* Very light grey-blue background */
+    --bg-card: #ffffff;              /* White cards for contrast */
+    --text-main: #1e293b;            /* Slate 800 - Main text (softer than pure black) */
+    --text-muted: #64748b;           /* Slate 500 - Secondary text */
+    --border: #e2e8f0;               /* Light border color */
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+    --radius: 12px;                  /* Border radius for rounded corners */
+}
+
+/**
+ * Dark Mode Theme Override
+ * Activated when <html data-theme="dark"> is set (by global.js)
+ * All --variable values are replaced with dark-friendly colors
+ */
+[data-theme="dark"] {
+    /* ===== Dark Mode Color Palette ===== */
+    --primary: #3b82f6;              /* Slightly lighter blue for better contrast */
+    --primary-hover: #60a5fa;        /* Even lighter for hover */
+    --bg-body: #0f172a;              /* Deep Slate - Dark background */
+    --bg-card: #1e293b;              /* Lighter Slate - Cards need contrast */
+    --text-main: #f1f5f9;            /* Almost white text */
+    --text-muted: #94a3b8;           /* Muted light grey */
+    --border: #334155;               /* Darker borders */
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+}
+
+/**
+ * Universal Box-Sizing Reset
+ * Makes width/height calculations include padding and border
+ * Example: width: 100px + padding: 10px = total width still 100px (not 120px)
+ */
+* {
+    box-sizing: border-box;
+}
+
+/**
+ * Root HTML element - prevent horizontal overflow
+ * Ensures page never scrolls horizontally on mobile
+ */
+html {
+    overflow-x: hidden;                       /* Hide horizontal scrollbar */
+    width: 100%;                              /* Full viewport width */
+}
+
+/**
+ * Body Base Styles
+ * Sets default font, colors, and smooth transitions between themes
+ */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;                               /* Remove default padding */
+    width: 100%;                              /* Full width */
+    overflow-x: hidden;                       /* Prevent horizontal scroll */
+    line-height: 1.6;                         /* Better readability */
+    transition: background-color 0.3s, color 0.3s; /* Smooth theme transitions */
+    word-wrap: break-word;                    /* Break long words globally */
+}
+
+/* ==================== 2. MODERN NAVIGATION (GLASS-MORPHISM EFFECT) ==================== */
+/**
+ * Sticky Header with Frosted Glass Effect
+ * Key Features:
+ * - Stays at top of screen when scrolling (position: sticky)
+ * - Semi-transparent background (rgba with alpha channel)
+ * - Blur effect on background content (backdrop-filter: blur)
+ * - Smooth theme transitions
+ * 
+ * Glass-morphism explained:
+ * 1. rgba(255,255,255,0.8) = 80% opaque white background
+ * 2. backdrop-filter: blur(10px) = Blurs whatever is behind the header
+ * 3. Result: Modern "frosted glass" look
+ */
+header {
+    background: rgba(255, 255, 255, 0.8);     /* Semi-transparent white */
+    -webkit-backdrop-filter: blur(10px);       /* Safari/iOS support */
+    backdrop-filter: blur(10px);               /* The "Frosted Glass" effect */
+    border-bottom: 1px solid var(--border);    /* Subtle separator line */
+    position: sticky;                          /* Stays at top when scrolling */
+    top: 0;                                    /* Stick to top edge */
+    z-index: 100;                              /* Above other content */
+    padding: 1rem 2rem;
+    display: flex;                             /* Flexbox for layout */
+    justify-content: space-between;            /* Logo left, nav right */
+    align-items: center;                       /* Vertically center items */
+}
+
+/* Dark mode glass effect - darker semi-transparent background */
+[data-theme="dark"] header {
+    background: rgba(15, 23, 42, 0.8);        /* Semi-transparent dark slate */
+}
+
+/* Site title/logo styling */
+header h1 {
+    margin: 0 0 0 -20px;                       /* Align with edge */;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary);                    /* Brand color */
+}
+
+/* Navigation links */
+nav {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+nav a {
+    color: var(--text-main);
+    text-decoration: none;                    /* Remove underline */
+    margin-left: 2rem;                        /* Space between links */
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s;                   /* Smooth color change on hover */
+}
+
+nav a:hover {
+    color: var(--primary);                    /* Highlight on hover */
+}
+
+/* Theme and language toggle buttons */
+nav button,
+nav .btn-icon {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav button:hover {
+    background: var(--bg-card);               /* Subtle background on hover */
+    border-color: var(--text-muted);
+}
+
+/* ==================== 3. MODERN CARDS & CONTAINERS ==================== */
+/**
+ * Reusable card styles for content sections
+ * Used by: service cards, news cards, forms, tickets
+ * Features: Rounded corners, shadows, smooth hover effects
+ */
+.container {
+    max-width: 1100px;                        /* Limit width for readability */
+    margin: 3rem auto;                        /* Center horizontally */
+    padding: 0 1.5rem;                        /* Side padding for mobile */
+    width: 100%;                              /* Full width up to max-width */
+    box-sizing: border-box;                   /* Include padding in width */
+}
+
+/* Ensure all images are responsive */
+img {
+    max-width: 100%;                          /* Never exceed container width */
+    height: auto;                             /* Maintain aspect ratio */
+    display: block;                           /* Remove inline spacing */
+}
+
+/* Card components with consistent styling */
+.card,
+.service-card,
+#news-widget,
+.form-container,
+.ticket {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);             /* Rounded corners */
+    padding: 2rem;
+    box-shadow: var(--shadow);                /* Subtle depth */
+    transition: transform 0.2s;               /* Smooth hover animation */
+    width: 100%;                              /* Full width of container */
+    max-width: 100%;                          /* Never overflow */
+    box-sizing: border-box;                   /* Include padding/border in width */
+}
+
+/* Hover effect: Lift card up slightly */
+.service-card:hover {
+    transform: translateY(-5px);              /* Move up 5px */
+}
+
+/* ==================== 4. MINIMALIST FORMS ==================== */
+/**
+ * Clean, modern form styling
+ * Focus states provide visual feedback to users
+ */
+
+/* Form labels */
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+/* Form inputs, selects, and textareas */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;                       /* Slightly smaller radius than cards */
+    background: var(--bg-body);
+    color: var(--text-main);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;                            /* Remove default browser outline */
+    margin-bottom: 1.5rem;
+}
+
+/**
+ * Focus state - triggers when user clicks/tabs into input
+ * Creates a "glow ring" effect for better UX
+ */
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary);             /* Highlight border */
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); /* Soft blue glow ring */
+    background: var(--bg-card);               /* Brighter background */
+}
+
+/* ==================== 5. MODERN BUTTONS ==================== */
+/**
+ * Pill-shaped buttons with smooth interactions
+ * Used for: CTAs, form submissions, actions
+ */
+.cta-button,
+button[type="submit"],
+.submit-btn {
+    display: inline-block;
+    background-color: var(--primary);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;                      /* Pill shape (fully rounded ends) */
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    text-align: center;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3); /* Blue shadow */
+}
+
+/* Hover state: Darker color + lift up */
+.cta-button:hover,
+button[type="submit"]:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);              /* Subtle lift */
+}
+
+/* Active state: Press down effect when clicked */
+.cta-button:active {
+    transform: translateY(0);                 /* Reset position (feels like pressing) */
+}
+
+/* ==================== 6. HERO SECTION ==================== */
+/**
+ * Large banner section on homepage
+ * Features gradient text effect using background-clip technique
+ */
+.hero {
+    background: var(--bg-card);               /* Clean white/dark background */
+    color: var(--text-main);
+    text-align: center;
+    padding: 5rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+/**
+ * Hero title with gradient text effect
+ * Technique: Apply gradient to background, then clip it to text shape
+ * Result: Text appears to have a gradient fill
+ */
+.hero h2 {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;                 /* Tight typography (kerning) */
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--primary) 0%, #a855f7 100%); /* Blue to purple */
+    -webkit-background-clip: text;            /* Safari support */
+    background-clip: text;                    /* Clip background to text */
+    -webkit-text-fill-color: transparent;     /* Make text transparent to show gradient */
+}
+
+/* ==================== 7. CHATBOT WIDGET ==================== */
+/**
+ * Fixed-position chatbot in bottom-right corner
+ * Two parts: Toggle button + Chat window
+ */
+
+/* Chatbot container - anchors everything to bottom-right */
+#chatbot-container {
+    position: fixed;                          /* Stays in place when scrolling */
+    bottom: 20px;                             /* 20px from bottom */
+    right: 20px;                              /* 20px from right */
+    z-index: 1000;                            /* Above all other content */
+}
+
+@media (max-width: 768px) {
+    #chatbot-container {
+        z-index: 9999 !important;             /* Ensure it's on top of everything on mobile */
+    }
+}
+
+/* Circular toggle button with chat emoji */
+#chatbot-toggle {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 50%;                       /* Perfect circle */
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    font-size: 1.5rem;
+    transition: transform 0.2s, background-color 0.3s;
+    width: 60px;                              /* Fixed width */
+    height: 60px;                             /* Fixed height */
+    display: flex;                            /* Flexbox for centering */
+    align-items: center;                      /* Center vertically */
+    justify-content: center;                  /* Center horizontally */
+}
+
+/* Hover: Slightly darker and larger */
+#chatbot-toggle:hover {
+    background: var(--primary-hover);
+    transform: scale(1.1);                    /* Grow by 10% */
+}
+
+/**
+ * Chat window (hidden by default)
+ * Toggled visible by JavaScript (global.js)
+ */
+#chatbot-window {
+    display: none;                            /* Hidden initially */
+    width: 300px;
+    height: 400px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    position: absolute;
+    bottom: 70px;                             /* Above the toggle button */
+    right: 0;
+    flex-direction: column;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;                         /* Keep content within borders */
+}
+
+/* Chat window header (blue bar at top) */
+.chatbot-header {
+    background: var(--primary);
+    color: white;
+    padding: 15px;
+    font-weight: 600;
+}
+
+/* Messages area (scrollable chat history) */
+#chatbot-messages {
+    flex: 1;                                  /* Take up remaining space */
+    padding: 15px;
+    overflow-y: auto;                         /* Scroll if messages overflow */
+    font-size: 14px;
+    color: var(--text-main);
+}
+
+/* Input area at bottom of chat window */
+.chatbot-input-area {
+    padding: 10px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    background: var(--bg-card);
+}
+
+/* Chat input field */
+#chat-input {
+    flex: 1;                                  /* Take up all available space */
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-body);
+    color: var(--text-main);
+}
+
+#chat-input:focus {
+    outline: none;
+    border-color: var(--primary);             /* Highlight when focused */
+}
+
+/* Send button in chatbot */
+.chatbot-input-area button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.chatbot-input-area button:hover {
+    background: var(--primary-hover);
+}
+
+/* ==================== 8. ANIMATIONS & KEYFRAMES ==================== */
+/**
+ * CSS Animations for smooth page loading and interactions
+ * How @keyframes work:
+ * 1. Define animation states (from/to or percentages)
+ * 2. Apply to elements with animation: name duration timing-function
+ * 3. Browser smoothly transitions between states
+ */
+
+/**
+ * 1. Fade Up Animation
+ * Best for: Cards, hero sections appearing on page load
+ * Effect: Element fades in while moving up
+ */
+@keyframes fadeUp {
+    from {
+        opacity: 0;                           /* Start invisible */
+        transform: translateY(20px);          /* Start 20px below final position */
+    }
+    to {
+        opacity: 1;                           /* End fully visible */
+        transform: translateY(0);             /* End at normal position */
+    }
+}
+
+/**
+ * 2. Fade In Animation
+ * Best for: Text, images, simple reveals
+ * Effect: Simple opacity transition
+ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;                           /* Start invisible */
+    }
+    to {
+        opacity: 1;                           /* End fully visible */
+    }
+}
+
+/**
+ * 3. Pulse Animation
+ * Best for: Status badges, important alerts, "look at me" elements
+ * Effect: Subtle scale + shadow pulse (breathing effect)
+ */
+@keyframes pulse {
+    0% {
+        transform: scale(1);                  /* Normal size */
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); /* Shadow starts small */
+    }
+    70% {
+        transform: scale(1.05);               /* Grow 5% */
+        box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); /* Shadow expands and fades */
+    }
+    100% {
+        transform: scale(1);                  /* Back to normal */
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); /* Shadow invisible */
+    }
+}
+
+/**
+ * 4. Shimmer Animation (Skeleton Loader)
+ * Best for: Loading placeholders while content fetches
+ * Effect: Gradient moves left to right (looks like light reflection)
+ */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;         /* Gradient starts off-screen left */
+    }
+    100% {
+        background-position: 200% 0;          /* Gradient ends off-screen right */
+    }
+}
+
+/* ===== APPLYING ANIMATIONS TO ELEMENTS ===== */
+
+/* Animate hero section on page load */
+.hero {
+    animation: fadeIn 1s ease-out forwards;   /* 1 second fade-in */
+}
+
+/**
+ * Animate content sections with staggered delay
+ * opacity: 0 hides element initially so animation is visible
+ * animation-delay creates cascading effect (hero first, then content)
+ */
+.container,
+.services,
+.gallery {
+    animation: fadeUp 0.8s ease-out forwards;
+    opacity: 0;                               /* Hidden until animation starts */
+    animation-delay: 0.3s;                    /* Wait 0.3s for hero to finish */
+}
+
+/* Service card hover animation (micro-interaction) */
+.service-card {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Custom easing curve */
+}
+
+.service-card:hover {
+    transform: translateY(-10px);             /* Lift up 10px */
+    box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1); /* Deeper shadow */
+    border-color: var(--primary);             /* Highlight border */
+}
+
+/* Button press effect */
+.cta-button:active,
+button:active {
+    transform: scale(0.95);                   /* Shrink 5% when clicked */
+}
+
+/* Status badge pulse (for status page) */
+.status-badge {
+    animation: pulse 2s infinite;             /* Pulse every 2 seconds, forever */
+}
+
+/**
+ * Skeleton loader styling
+ * Shows animated placeholder while news/data loads
+ * Gradient moves across creating "shimmer" effect
+ */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;               /* Double width for gradient movement */
+    animation: shimmer 1.5s infinite;         /* Animate forever */
+    border-radius: 4px;
+    height: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+    display: block;
+}
+
+/* Dark mode skeleton (darker colors) */
+[data-theme="dark"] .skeleton {
+    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+}
+
+/* ==================== 9. ANIMATED PRELOADER ==================== */
+/**
+ * 3-Phase Logo Animation on Page Load
+ * Controlled by global.js (animatePreloader function)
+ * Phases:
+ * 1. Drop In - Logo drops from top to center
+ * 2. Spin - Logo spins while content loads
+ * 3. Fly to Header - Logo moves to final position in header
+ * 
+ * How it works:
+ * - JavaScript adds/removes CSS classes at timed intervals
+ * - Each class triggers different animation
+ * - Final position calculated by JS based on header logo location
+ */
+
+/* Preloader fullscreen overlay */
+#preloader {
+    position: fixed;                          /* Covers entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-body);         /* Matches page background */
+    z-index: 9999;                            /* Above everything else */
+}
+
+/* Logo starting state (positioned for drop animation) */
+.logo-animate {
+    width: 180px;                             /* Larger than header logo */
+    position: absolute;
+    left: 50%;                                /* Center horizontally */
+    top: -200px;                              /* Start above viewport */
+    transform: translateX(-50%);              /* Perfect horizontal centering */
+}
+
+/**
+ * Phase 1: Drop from Top to Center
+ * Duration: 1 second
+ * Applied by JS after page load
+ */
+.drop-in {
+    animation: dropToCenter 1s ease-out forwards;
+}
+
+@keyframes dropToCenter {
+    0% { 
+        top: -200px;                          /* Start above screen */
+    }
+    100% { 
+        top: 50%;                             /* Drop to vertical center */
+        transform: translate(-50%, -50%);     /* Center both axes */
+    }
+}
+
+/**
+ * Phase 2: Gentle Pulse (Looping)
+ * Subtle scale animation while content loads
+ * Applied by JS after drop completes
+ */
+.spinning {
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: spinLogo 1.5s ease-in-out infinite;   /* Infinite loop */
+}
+
+@keyframes spinLogo {
+    0%, 100% { 
+        transform: translate(-50%, -50%) scale(1);   /* Normal size */
+        opacity: 1;
+    }
+    50% { 
+        transform: translate(-50%, -50%) scale(1.1); /* Slightly larger */
+        opacity: 0.8;
+    }
+}
+
+/**
+ * Phase 3: Fly to Header
+ * Logo moves to final position in header
+ * CSS variables (--target-top, --target-left, --target-width) set by JavaScript
+ * These are calculated based on header logo's actual position
+ */
+.fly-to-header {
+    position: fixed;                          /* Stay relative to viewport */
+    
+    /* Target position set by JavaScript */
+    top: var(--target-top);                   /* Final Y position */
+    left: var(--target-left);                 /* Final X position */
+    width: var(--target-width);               /* Final size */
+    
+    transform: translate(0, 0) !important;    /* Reset centering transform */
+    
+    /* Smooth flight animation (custom cubic-bezier for realistic motion) */
+    transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/**
+ * Background Fade Out
+ * Hides preloader background when animation completes
+ */
+.fade-bg {
+    opacity: 0;                               /* Fade to transparent */
+    transition: opacity 1s ease-out;
+    pointer-events: none;                     /* Allow clicks through */
+}
+
+/* ==================== 10. PROJECT GALLERY ==================== */
+/**
+ * 3x2 Grid Gallery (3 columns, 2 rows)
+ * Uses CSS Grid for responsive layout
+ * Mobile: Stacks to single column
+ */
+.gallery {
+    display: grid;                            /* Enable CSS Grid layout */
+    grid-template-columns: repeat(3, 1fr);    /* 3 equal-width columns */
+    gap: 20px;                                /* Space between items */
+    margin-top: 20px;
+}
+
+/* Responsive: Stack vertically on mobile */
+@media (max-width: 768px) {
+    .gallery {
+        grid-template-columns: 1fr;           /* Single column on mobile */
+    }
+}
+
+/* Individual gallery card */
+.gallery-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;                         /* Clip image corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);              /* Lift on hover */
+}
+
+/**
+ * Gallery images with fixed height
+ * object-fit: cover crops image nicely without stretching
+ */
+.gallery-item img {
+    width: 100%;
+    height: 200px;                            /* Fixed height for uniformity */
+    object-fit: cover;                        /* Crop to fill, maintain aspect ratio */
+    display: block;
+}
+
+/* Gallery caption text */
+.gallery-caption {
+    padding: 15px;
+    text-align: center;
+}
+
+.gallery-caption h4 {
+    margin: 0 0 5px 0;
+    color: var(--primary);
+}
+
+.gallery-caption p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* ==================== 11. TECH NEWS WIDGET ==================== */
+/**
+ * News section with responsive grid
+ * Cards auto-fit based on available space
+ * Minimum card width: 280px
+ */
+#news-widget {
+    margin-top: 4rem;
+}
+
+/**
+ * News grid with auto-fit columns
+ * auto-fit: Creates as many columns as will fit
+ * minmax(280px, 1fr): Each column min 280px, max equal width
+ */
+#news-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 0;
+    width: 100%;                              /* Full width of container */
+    box-sizing: border-box;                   /* Include padding in width */
+}
+
+/* Individual news card */
+.news-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.2s;
+    box-shadow: var(--shadow);
+    width: 100%;                              /* Full width of grid cell */
+    box-sizing: border-box;                   /* Include border in width */
+    max-width: 100%;                          /* Never exceed container */
+}
+
+.news-card:hover {
+    transform: translateY(-5px);              /* Lift on hover */
+}
+
+/* News article image */
+.news-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;                        /* Crop to fill */
+}
+
+/* News article text content */
+.news-content {
+    padding: 15px;
+    width: 100%;                              /* Ensure full width */
+    box-sizing: border-box;                   /* Include padding in width */
+}
+
+.news-content h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    word-wrap: break-word;                    /* Break long words */
+    overflow-wrap: break-word;                /* Modern word breaking */
+    hyphens: auto;                            /* Add hyphens for long words */
+}
+
+.news-content h4 a {
+    color: var(--text-main);
+    text-decoration: none;
+    word-break: break-word;                   /* Prevent link overflow */
+}
+
+.news-content h4 a:hover {
+    color: var(--primary);                    /* Highlight on hover */
+}
+
+.news-content p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0;
+    word-wrap: break-word;                    /* Break long words */
+    overflow-wrap: break-word;                /* Prevent overflow */
+}
+
+/* ==================== 12. SERVICE LISTS ==================== */
+/**
+ * Service detail lists in service cards
+ * Content is replaced by JavaScript based on language
+ */
+.service-list {
+    text-align: left;
+    margin: 15px 0;
+    padding-left: 20px;                       /* Indent for bullets */
+    font-size: 0.9rem;
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.service-list li {
+    margin-bottom: 8px;                       /* Breathing room between items */
+}
+
+/* Service quality note */
+.service-note {
+    font-size: 0.85rem;
+    color: var(--text-main);
+    font-weight: bold;
+    margin-top: 15px;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+}
+
+/* ==================== 13. SOCIAL MEDIA SECTION ==================== */
+/**
+ * Social media icons with hover effects
+ */
+.social-links-container {
+    margin-top: 50px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Social media icons row */
+.social-links {
+    display: flex;
+    justify-content: center;                  /* Center horizontally */
+    gap: 25px;                                /* Space between icons */
+    align-items: center;
+}
+
+/* Social media icon images */
+.social-links a img {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+/* Hover effect: Pop up slightly */
+.social-links a img:hover {
+    transform: translateY(-5px);              /* Lift up */
+    opacity: 0.8;                             /* Slightly transparent */
+}
+
+/**
+ * X (Twitter) Logo Theme Support
+ * Light mode: Black logo (filter: brightness(0) makes it black)
+ * Dark mode: White logo (invert adds white)
+ */
+.x-logo {
+    filter: brightness(0);                    /* Make black for light mode */
+}
+
+[data-theme="dark"] .x-logo {
+    filter: brightness(0) invert(1);          /* Make white for dark mode */
+}
+
+/* ==================== 14. UTILITIES ==================== */
+/**
+ * Reusable utility classes for common patterns
+ */
+.flex-center { 
+    display: flex; 
+    align-items: center; 
+}
+
+.gap-small { 
+    gap: 10px;                                /* Better default spacing between logo and text */
+}
+
+.text-center { 
+    text-align: center; 
+}
+
+.mt-large { 
+    margin-top: 50px; 
+}
+
+/* Header logo (initially hidden, revealed by preloader animation) */
+.logo-header { 
+    width: 170px; 
+    height: auto; 
+    opacity: 0;                          
+    margin-left: -50px;     /* Hidden until preloader completes */
+}
+
+/* Icon buttons (theme/language toggles) */
+.btn-icon { 
+    cursor: pointer; 
+    background: none; 
+    border: none; 
+    font-size: 1.5rem; 
+    margin-left: 10px; 
+}
+
+.btn-icon:hover { 
+    transform: scale(1.1);                    /* Grow 10% on hover */
+}
+
+/* Prevent theme toggle button from scaling on hover (icon handles it) */
+.theme-toggle:hover {
+    transform: none;
+}
+
+/* ==================== CUSTOM THEME TOGGLE ICON ==================== */
+/**
+ * Sun/Moon icon that changes based on theme
+ * Light mode: Shows sun with rays
+ * Dark mode: Shows moon crescent
+ */
+.theme-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--text-main);
+    transition: color 0.3s ease, opacity 0.3s ease;
+    display: block;                           /* Prevent inline spacing issues */
+}
+
+/* Sun rays visible in light mode */
+.sun-rays {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* Moon crescent hidden in light mode */
+.moon-crescent {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Dark mode: Hide sun rays, show moon crescent */
+[data-theme="dark"] .sun-rays {
+    opacity: 0;
+}
+
+[data-theme="dark"] .moon-crescent {
+    opacity: 1;
+}
+
+/* Hover effect */
+.theme-toggle:hover .theme-icon {
+    color: var(--primary);
+}
+
+/* Language toggle subtle scale animation on click */
+nav .btn-icon:not(.theme-toggle).clicked {
+    animation: subtleScale 0.2s ease;
+}
+
+@keyframes subtleScale {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(0.9); }
+}
+
+/* ==================== 15. MOBILE NAVIGATION (HAMBURGER MENU) ==================== */
+/**
+ * Mobile hamburger menu button (hidden on desktop)
+ * Displays on screens smaller than 768px
+ */
+.hamburger {
+    display: none;                            /* Hidden by default (desktop) */
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 101;
+}
+
+/* Hamburger icon bars */
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: var(--text-main);
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+
+/* Animated hamburger to X when menu is open */
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(7px, 7px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;                               /* Hide middle bar */
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* ==================== 16. RESPONSIVE DESIGN (MOBILE & TABLET) ==================== */
+/**
+ * TABLET BREAKPOINT (768px - 1024px)
+ * Adjusts layout for medium screens (iPads, tablets)
+ */
+@media (max-width: 1024px) {
+    /* Reduce header padding */
+    header {
+        padding: 1rem 1.5rem;
+    }
+    
+    /* Adjust navigation spacing */
+    nav a {
+        margin-left: 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Container adjustments */
+    .container {
+        padding: 0 1rem;
+        margin: 2rem auto;
+    }
+    
+    /* Hero section adjustments */
+    .hero h2 {
+        font-size: 2.5rem;
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+    }
+    
+    /* Service cards - 2 columns on tablet */
+    .services {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    z
+    /* Gallery - 2 columns on tablet */
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/**
+ * MOBILE BREAKPOINT (Up to 768px)
+ * Major layout changes for smartphones
+ */
+@media (max-width: 768px) {
+    /* ========== HEADER & NAVIGATION ========== */
+    /**
+     * Mobile header with hamburger menu
+     * Navigation becomes full-screen slide-in menu
+     */
+    header {
+        padding: 0.75rem 1rem;               /* Better mobile padding */
+        position: relative;
+        min-height: 60px;                    /* Consistent header height */
+    }
+    
+    header h1 {
+        font-size: 1.1rem;
+        margin: 0;                            /* Remove any margins */
+    }
+    
+    .logo-header {
+        width: 70px;                          /* Optimized logo size for mobile */
+    }
+    
+    .flex-center {
+        gap: 8px;                             /* Proper spacing between logo and text */
+    }
+    
+    /* Show hamburger button on mobile */
+    .hamburger {
+        display: flex;
+    }
+    
+    /* Hide desktop navigation, show mobile menu instead */
+    nav {
+        position: fixed;
+        top: 0;
+        right: -100%;                         /* Hidden off-screen by default */
+        width: 70%;                           /* Take up 70% of screen width */
+        max-width: 300px;
+        height: 100vh;                        /* Full viewport height */
+        background: var(--bg-card);
+        box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+        padding: 5rem 2rem 2rem 2rem;
+        display: flex;
+        flex-direction: column;               /* Stack links vertically */
+        align-items: flex-start;
+        gap: 1.5rem;
+        transition: right 0.3s ease-in-out;   /* Smooth slide animation */
+        z-index: 100;
+        overflow-y: auto;                     /* Scroll if content overflows */
+    }
+    
+    /* Show mobile menu when active */
+    nav.active {
+        right: 0;                             /* Slide in from right */
+    }
+    
+    /* Mobile navigation links */
+    nav a {
+        margin-left: 0;
+        font-size: 1.1rem;
+        padding: 0.75rem 0;
+        width: 100%;
+        border-bottom: 1px solid var(--border);
+    }
+    
+    /* Mobile toggle buttons - reorganized for better UX */
+    nav .btn-icon {
+        margin-left: 0;
+        width: 100%;
+        padding: 1rem;
+        text-align: left;
+        justify-content: flex-start;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin-bottom: 10px;
+        background: var(--bg-main);
+        font-size: 1.1rem;
+    }
+    
+    nav .btn-icon:hover {
+        background: var(--bg-card);
+        transform: none;                      /* Remove scale on mobile */
+    }
+    
+    /* Add labels for mobile buttons */
+    nav .theme-toggle::after {
+        content: "Theme";
+        font-size: 1rem;
+        margin-left: 5px;
+    }
+    
+    nav .btn-icon:not(.theme-toggle)::after {
+        content: "Language";
+        font-size: 1rem;
+        margin-left: 5px;
+    }
+    
+    /* Mobile menu backdrop overlay */
+    .menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);       /* Semi-transparent black */
+        z-index: 99;                          /* Below menu, above content */
+    }
+    
+    .menu-overlay.active {
+        display: block;
+    }
+    
+    /* ========== CONTENT ADJUSTMENTS ========== */
+    /* Container padding */
+    .container {
+        padding: 0 1rem;
+        margin: 1.5rem auto;
+        width: 100%;                          /* Ensure full width */
+        max-width: 100%;                      /* Prevent overflow */
+    }
+    
+    /* Prevent any element from causing horizontal scroll */
+    * {
+        max-width: 100%;                      /* Global max-width constraint */
+    }
+    
+    /* Allow specific elements to be 100% */
+    html, body, .container, main, header, footer,
+    input, select, textarea, button {
+        max-width: none;                      /* Remove constraint for structural elements */
+    }
+    
+    /* Hero section - smaller on mobile */
+    .hero {
+        padding: 2rem 1rem;
+        margin-top: 1rem;
+    }
+    
+    .hero h2 {
+        font-size: 1.8rem;
+        line-height: 1.2;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    /* Buttons - full width on mobile for easier tapping */
+    .btn,
+    button[type="submit"] {
+        width: 100%;
+        padding: 1rem;                        /* Larger tap target */
+        font-size: 1rem;
+    }
+    
+    /* ========== CARDS & GRIDS ========== */
+    /* Service cards - single column on mobile */
+    .services {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .service-card {
+        padding: 1.5rem;
+    }
+    
+    /* Gallery - single column on mobile */
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+    
+    /* News cards - single column on mobile */
+    #news-list {
+        grid-template-columns: 1fr;
+        gap: 1rem;                            /* Reduce gap on mobile */
+        padding: 0;                           /* Remove any padding */
+    }
+    
+    /* Ensure news cards fit properly on mobile */
+    .news-card {
+        max-width: 100%;                      /* Never exceed screen width */
+        margin: 0 auto;                       /* Center if needed */
+    }
+    
+    /* News card content adjustments */
+    .news-content {
+        padding: 12px;                        /* Slightly less padding */
+    }
+    
+    .news-content h4 {
+        font-size: 1rem;                      /* Smaller title on mobile */
+        line-height: 1.3;
+    }
+    
+    .news-content p {
+        font-size: 0.85rem;                   /* Smaller description */
+        line-height: 1.5;
+    }
+    
+    /* Card padding reduction */
+    .card,
+    .ticket,
+    .form-container {
+        padding: 1.5rem;
+    }
+    
+    /* ========== FORMS ========== */
+    /* Form inputs - larger for easier typing */
+    input,
+    select,
+    textarea {
+        font-size: 16px;                      /* Prevents iOS zoom on focus */
+        padding: 0.875rem;
+    }
+    
+    /* Form groups */
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+    
+    /* ========== CHATBOT ========== */
+    /* Chatbot - full width on mobile */
+    #chatbot-window {
+        width: 100%;
+        height: 80vh;
+        max-height: none;
+        bottom: 0;
+        right: 0;
+        border-radius: 16px 16px 0 0;         /* Rounded top corners only */
+    }
+    
+    #chatbot-toggle {
+        position: fixed !important;           /* Must stay fixed on mobile */
+        bottom: 15px !important;
+        right: 15px !important;
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 1.6rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;   /* Center the icon inside button */
+        touch-action: manipulation !important; /* Better touch response */
+        -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
+    }
+    
+    /* Improve mobile chat input area */
+    .chatbot-input-area {
+        padding: 12px !important;
+        gap: 8px;
+    }
+    
+    #chat-input {
+        font-size: 16px !important;           /* Prevent zoom on iOS */
+        padding: 12px !important;
+        border-radius: 8px !important;
+        min-height: 44px !important;          /* Better touch target */
+        box-sizing: border-box;
+    }
+    
+    .chatbot-input-area button {
+        min-width: 44px !important;           /* Better touch target */
+        min-height: 44px !important;
+        padding: 8px 16px !important;
+        font-size: 14px !important;
+        border-radius: 8px !important;
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Improve mobile chat messages area */
+    #chatbot-messages {
+        padding: 16px !important;
+        font-size: 15px !important;           /* Better readability on mobile */
+        line-height: 1.5 !important;
+    }
+    
+    .chatbot-header {
+        padding: 16px !important;
+        font-size: 16px !important;
+        position: relative;
+    }
+    
+    #chatbot-close-btn {
+        font-size: 18px !important;
+        padding: 8px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* ========== TABLES ========== */
+    /* Tables - horizontal scroll on mobile */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;    /* Smooth scrolling on iOS */
+    }
+    
+    thead th,
+    tbody td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    /* ========== SOCIAL MEDIA ICONS ========== */
+    .social-media {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .social-media a {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+    
+    /* ========== FOOTER ========== */
+    footer {
+        padding: 1.5rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+/**
+ * SMALL MOBILE BREAKPOINT (Up to 480px)
+ * Extra adjustments for very small screens
+ */
+@media (max-width: 480px) {
+    /* Even smaller text on tiny screens */
+    .hero h2 {
+        font-size: 1.5rem;
+    }
+    
+    .hero p {
+        font-size: 0.95rem;
+    }
+    
+    /* Mobile nav slightly wider on small screens */
+    nav {
+        width: 85%;
+    }
+    
+    /* Reduce container padding further */
+    .container {
+        padding: 0 0.75rem;
+        width: 100%;
+    }
+    
+    /* Smaller cards */
+    .card,
+    .service-card,
+    .ticket {
+        padding: 1rem;
+    }
+    
+    /* Fix news grid for very small screens */
+    #news-list {
+        grid-template-columns: 1fr;           /* Always single column */
+        gap: 0.75rem;                         /* Smaller gap */
+        padding: 0;
+    }
+    
+    .news-card {
+        margin: 0;                            /* Remove margins */
+    }
+    
+    .news-content h4 {
+        font-size: 0.95rem;                   /* Smaller titles */
+    }
+    
+    .news-content p {
+        font-size: 0.8rem;                    /* Smaller text */
+    }
+    
+    /* Logo adjustments */
+    .logo-header {
+        width: 55px;                          /* Smaller logo for tiny screens */
+    }
+
+    header h1 {
+        font-size: 0.95rem;                   /* Smaller text for tiny screens */
+        margin: 0;
+    }
+    
+    header {
+        padding: 0.5rem 0.75rem;              /* Reduced padding for tiny screens */
+        min-height: 50px;
+    }
+    
+    .flex-center {
+        gap: 6px;                             /* Tighter spacing on tiny screens */
+    }
+    
+    /* Chatbot optimizations for tiny screens */
+    #chatbot-toggle {
+        position: fixed !important;           /* Must stay fixed on small mobile */
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1.4rem !important;
+        bottom: 10px !important;
+        right: 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;   /* Center the icon inside button */
+    }
+    
+    #chatbot-window {
+        width: 100%;
+        height: 75vh;
+        bottom: 0;
+        right: 0;
+    }
+}
+
+/**
+ * LANDSCAPE ORIENTATION ON MOBILE
+ * Adjustments when phone is held horizontally
+ */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero {
+        padding: 1.5rem 1rem;
+    }
+    
+    .hero h2 {
+        font-size: 1.6rem;
+    }
+    
+    /* Chatbot smaller in landscape */
+    #chatbot-window {
+        height: 70vh;
+    }
+}
+
+/**
+ * TOUCH DEVICE OPTIMIZATIONS
+ * Larger tap targets and hover state adjustments
+ */
+@media (hover: none) and (pointer: coarse) {
+    /* Remove hover effects on touch devices */
+    .service-card:hover,
+    .gallery-item:hover,
+    .news-card:hover {
+        transform: none;
+    }
+    
+    /* Larger tap targets for buttons */
+    button,
+    .btn,
+    nav a {
+        min-height: 44px;                     /* iOS recommended minimum */
+        min-width: 44px;
+    }
+    
+    /* Remove hover states that don't work well on touch */
+    nav button:hover {
+        background: transparent;
+    }
+}
+
+/**
+ * HIGH RESOLUTION SCREENS (RETINA DISPLAYS)
+ * Ensure crisp images on high-DPI screens
+ */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Use higher quality images for retina if available */
+    .logo-header,
+    .logo-animate {
+        image-rendering: -webkit-optimize-contrast;
+    }
+}
+
+/* ==================== MOBILE CHATBOT VISIBILITY ==================== */
+/**
+ * Hide chatbot on mobile devices only for confirmation page
+ * Show chatbot on mobile for: home page, booking page, status page
+ */
+
+/* Hide chatbot on mobile only for confirmation page */
+@media (max-width: 768px) {
+    body[data-page="confirmation"] #chatbot-container {
+        display: none !important;
+    }
+}
+
+/* Alternative method: Hide by page title if data-page is not available */
+/* Chatbot now visible on all pages including confirmation page on mobile */
+
+/* Language Toggle Button (Shared) */
+.lang-toggle {
+    font-size: 0.9rem; 
+    font-weight: 700; 
+    border: 2px solid currentColor !important;
+    border-radius: 6px; 
+    padding: 4px 8px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-main);
+    background: transparent;
+}
+.lang-toggle:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
+}
+
+/* ==================== LOADING STATES ==================== */
+/**
+ * Loading spinner and button states
+ */
+
+/* Loading spinner animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Loading spinner element */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Small spinner for buttons */
+.loading-spinner-small {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Button loading state */
+button.loading {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+}
+
+button.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* Loading overlay */
+#loading-overlay {
+    backdrop-filter: blur(4px);
+}
+
+#loading-overlay .loading-message {
+    color: white;
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+/* Form field error state */
+.input-error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Success state */
+.input-success {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Skeleton loading placeholder */
+.skeleton {
+    background: linear-gradient(90deg, var(--border) 25%, var(--bg-card) 50%, var(--border) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: var(--radius);
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Toast notification styles */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    color: white;
+    font-weight: 500;
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+    max-width: 350px;
+    box-shadow: var(--shadow);
+}
+
+.toast.success { background: #10b981; }
+.toast.error { background: #ef4444; }
+.toast.info { background: #3b82f6; }
+.toast.warning { background: #f59e0b; }
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}

@@ -1,0 +1,495 @@
+/* 
+======================================
+CONFIRMATION.CSS - Booking Confirmation Styles
+======================================
+Purpose: Styles specific to confirmation.html (booking success page)
+Features:
+- Success message styling
+- Printable ticket design
+- Reference code display
+- Print-friendly layout
+- Navigation links
+Dependencies: Requires style.css (loaded first)
+====================================== 
+*/
+
+/* ==================== PAGE LAYOUT ==================== */
+/**
+ * Centers content and provides spacing
+ */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    text-align: center;
+}
+
+/* ==================== SUCCESS MESSAGE ==================== */
+/**
+ * Main heading showing booking received confirmation
+ */
+h1 {
+    color: var(--primary);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Success icon (can be added via CSS) */
+h1::before {
+    content: "✅ ";
+    display: block;
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: bounceIn 0.8s ease-out;
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ==================== TICKET CARD ==================== */
+/**
+ * Printable ticket containing reference code
+ * Styled like a physical ticket with border and spacing
+ */
+.ticket {
+    background: var(--bg-card);
+    border: 2px dashed var(--border);       /* Dashed border for ticket effect */
+    border-radius: var(--radius);
+    padding: 3rem 2rem;
+    max-width: 500px;
+    margin: 2rem auto;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.8s ease-out;
+}
+
+/* Ticket title */
+.ticket h3 {
+    color: var(--text-main);
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Ticket description text */
+.ticket p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+/* ==================== REFERENCE CODE DISPLAY ==================== */
+/**
+ * Large, prominent reference code display
+ * Customer needs to save this code for status checking
+ */
+.ref-code {
+    background: var(--bg-body);
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    font-family: 'Courier New', monospace;  /* Monospace for code-like appearance */
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--primary);
+    text-align: center;
+    word-break: break-all;                  /* Prevent overflow on long codes */
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    animation: glow 2s ease-in-out infinite;
+}
+
+/* Subtle glow animation to draw attention */
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+    50% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0.2); }
+}
+
+/* Loading state for reference code */
+#displayRef:empty::after {
+    content: "Loading...";
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    animation: pulse 1.5s infinite;
+}
+
+/* ==================== PRINT BUTTON ==================== */
+/**
+ * Button to trigger browser print dialog
+ * Styled as secondary action button
+ */
+.ticket button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-top: 1rem;
+}
+
+.ticket button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.ticket button:active {
+    transform: translateY(0);
+}
+
+/* Print icon (SVG) */
+.ticket button::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+    vertical-align: text-bottom;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 6 2 18 2 18 9'%3E%3C/polyline%3E%3Cpath d='M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2'%3E%3C/path%3E%3Crect x='6' y='14' width='12' height='8'%3E%3C/rect%3E%3C/svg%3E") no-repeat center;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 6 2 18 2 18 9'%3E%3C/polyline%3E%3Cpath d='M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2'%3E%3C/path%3E%3Crect x='6' y='14' width='12' height='8'%3E%3C/rect%3E%3C/svg%3E") no-repeat center;
+}
+
+/* ==================== NAVIGATION LINKS ==================== */
+/**
+ * Links to return to homepage or check status
+ */
+body > p {
+    margin-top: 2rem;
+    font-size: 1rem;
+}
+
+body > p a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    margin: 0 1rem;
+    transition: color 0.2s;
+}
+
+body > p a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+/* Separator between links */
+body > p a + a::before {
+    content: "";
+    /* Separator already in HTML as " | " */
+}
+
+/* ==================== PRINT STYLES ==================== */
+/**
+ * Professional Invoice/Receipt Layout for Printing
+ * Hides normal web content and shows a structured document
+ */
+@media print {
+    /* 1. RESET & SETUP */
+    * {
+        -webkit-print-color-adjust: exact !important; /* Force background colors */
+        print-color-adjust: exact !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    @page {
+        margin: 0; /* Use minimal browser margins */
+        size: auto;
+    }
+
+    html, body {
+        background: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        width: 100% !important;
+        display: block !important; /* Override flex centering */
+    }
+
+    /* 2. HIDE WEB UI ELEMENTS */
+    /* Hide everything that is a direct child of body, EXCEPT the print invoice */
+    body > *:not(#print-invoice) {
+        display: none !important;
+    }
+
+    /* 3. SHOW & STYLE INVOICE */
+    #print-invoice {
+        display: block !important;
+        width: 100%;
+        max-width: 100%; /* Use full width */
+        padding: 2cm; /* Standard print margin */
+        box-sizing: border-box;
+        font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+        color: #1a1a1a;
+        line-height: 1.5;
+    }
+
+    /* Header Section */
+    .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 2px solid #000;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+    }
+
+    .company-details h1 {
+        font-size: 24pt;
+        font-weight: 800;
+        color: #000;
+        margin: 0 0 5px 0;
+        text-transform: uppercase;
+        animation: none !important; /* Remove bounce animation */
+    }
+
+    .company-details h1::before {
+        display: none; /* Remove the emoji icon */
+    }
+
+    .company-details p {
+        margin: 2px 0;
+        font-size: 10pt;
+        color: #555;
+    }
+
+    .invoice-meta {
+        text-align: right;
+    }
+
+    .invoice-meta h2 {
+        font-size: 16pt;
+        color: #000;
+        margin: 0 0 15px 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .meta-row {
+        margin-bottom: 5px;
+        font-size: 11pt;
+    }
+
+    .meta-row span:first-child {
+        font-weight: 600;
+        margin-right: 10px;
+        color: #555;
+    }
+
+    /* Body Section */
+    .invoice-body {
+        margin-bottom: 40px;
+    }
+
+    .invoice-section {
+        margin-bottom: 30px;
+    }
+
+    .invoice-section h3 {
+        font-size: 12pt;
+        text-transform: uppercase;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .invoice-section p {
+        font-size: 11pt;
+        margin-bottom: 10px;
+    }
+
+    /* Reference Code Box */
+    .ref-box {
+        background: #f4f4f4 !important;
+        border: 2px solid #000;
+        padding: 15px 20px;
+        margin: 20px 0;
+        display: inline-block;
+        border-radius: 4px;
+        min-width: 300px;
+        text-align: center;
+    }
+
+    .ref-box .label {
+        display: block;
+        font-size: 10pt;
+        text-transform: uppercase;
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .ref-box .code {
+        display: block;
+        font-family: 'Courier New', monospace;
+        font-size: 24pt;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #000;
+    }
+
+    .instruction {
+        font-style: italic;
+        color: #555;
+        font-size: 10pt !important;
+    }
+
+    ol {
+        padding-left: 20px;
+    }
+
+    ol li {
+        margin-bottom: 5px;
+        font-size: 11pt;
+    }
+
+    /* Footer Section */
+    .invoice-footer {
+        text-align: center;
+        margin-top: 50px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+    }
+
+    .invoice-footer p {
+        margin: 5px 0;
+        font-size: 11pt;
+        font-weight: 600;
+    }
+
+    .invoice-footer .small {
+        font-size: 9pt;
+        font-weight: 400;
+        color: #888;
+    }
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+/**
+ * Mobile optimizations
+ */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h1::before {
+        font-size: 3rem;
+    }
+    
+    .ticket {
+        padding: 2rem 1.5rem;
+        margin: 1.5rem auto;
+    }
+    
+    .ref-code {
+        font-size: 1.5rem;
+        padding: 1rem;
+        letter-spacing: 0.1em;
+    }
+    
+    .ticket h3 {
+        font-size: 1.25rem;
+    }
+    
+    body > p {
+        font-size: 0.9rem;
+    }
+    
+    body > p a {
+        display: block;
+        margin: 0.5rem 0;
+    }
+}
+
+/* ==================== ACCESSIBILITY ==================== */
+/**
+ * High contrast mode support
+ */
+@media (prefers-contrast: high) {
+    .ref-code {
+        border-width: 3px;
+    }
+    
+    .ticket {
+        border-width: 3px;
+    }
+}
+
+/* ==================== DARK MODE ADJUSTMENTS ==================== */
+/**
+ * Enhanced dark mode for confirmation page
+ * Better visibility and aesthetics in dark environments
+ */
+[data-theme="dark"] body {
+    background: var(--bg-body);
+}
+
+[data-theme="dark"] h1 {
+    color: var(--primary);
+}
+
+[data-theme="dark"] .ticket {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: var(--border);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .ticket h3 {
+    color: var(--text-main);
+}
+
+[data-theme="dark"] .ticket p {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .ref-code {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+/* Dark mode glow animation - brighter */
+[data-theme="dark"] .ref-code {
+    animation: glowDark 2s ease-in-out infinite;
+}
+
+@keyframes glowDark {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2); }
+    50% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.3); }
+}
+
+[data-theme="dark"] .ticket button {
+    background: var(--primary);
+}
+
+[data-theme="dark"] .ticket button:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+[data-theme="dark"] body > p a {
+    color: var(--primary);
+}
+
+[data-theme="dark"] body > p a:hover {
+    color: var(--primary-hover);
+}

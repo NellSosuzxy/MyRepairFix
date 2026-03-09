@@ -1,0 +1,620 @@
+/* 
+======================================
+STATUS.CSS - Status Checker Styles
+======================================
+Purpose: Styles specific to status.html (booking status checker)
+Features:
+- Status check form styling
+- Results display card
+- Status badge color coding
+- Reference code input
+- Email verification field
+Dependencies: Requires style.css (loaded first)
+====================================== 
+*/
+
+/* ==================== PAGE CONTAINER ==================== */
+/**
+ * Centers the status checker and provides spacing
+ */
+.container {
+    max-width: 700px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+}
+
+.container h2 {
+    color: var(--text-main);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+/* ==================== STATUS CHECK FORM ==================== */
+/**
+ * Form for entering reference code and email
+ * Compact design for quick status checks
+ */
+#statusForm {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+/* Form labels */
+#statusForm label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+/* Form inputs */
+#statusForm input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-body);
+    color: var(--text-main);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#statusForm input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background: var(--bg-card);
+}
+
+/* Reference code input - monospace font for code-like appearance */
+#statusForm input[name="ref_code"] {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Submit button */
+#statusForm button {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    padding: 0.875rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+#statusForm button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+#statusForm button:active {
+    transform: translateY(0);
+}
+
+/* ==================== RESULTS DISPLAY ==================== */
+/**
+ * Results card - hidden by default, shown by JavaScript after successful check
+ * Displays device info, status, and last update time
+ */
+#result {
+    display: none;                          /* Hidden initially */
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.5s ease-out;        /* Smooth appearance */
+}
+
+/* Results title */
+#result h3 {
+    color: var(--text-main);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.75rem;
+}
+
+/* Result rows */
+#result p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 1rem;
+}
+
+#result p:last-child {
+    border-bottom: none;
+}
+
+/* Result labels (left side) */
+#result p strong {
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Result values (right side) */
+#result p span {
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+/* ==================== STATUS BADGE ==================== */
+/**
+ * Color-coded status indicator
+ * Changes color based on repair status
+ * Includes subtle pulse animation
+ */
+.status-badge {
+    display: inline-block;
+    padding: 0.5rem 1.25rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: pulse 2s infinite;           /* Breathing effect */
+}
+
+/* Status color variants */
+/* Orange - Waiting to start */
+.status-badge[style*="orange"] {
+    background: #fbbf24;
+    color: #78350f;
+}
+
+/* Blue - In progress */
+.status-badge[style*="007bff"],
+.status-badge[style*="rgb(0, 123, 255)"] {
+    background: #3b82f6;
+    color: white;
+}
+
+/* Green - Completed */
+.status-badge[style*="green"] {
+    background: #22c55e;
+    color: #14532d;
+}
+
+/* ==================== DEVICE INFO DISPLAY ==================== */
+/**
+ * Device model display styling
+ */
+#resDevice {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+/* ==================== DATE DISPLAY ==================== */
+/**
+ * Last updated timestamp
+ */
+#resDate {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* ==================== EMPTY STATE ==================== */
+/**
+ * Message shown when no results found (optional - can be added by JS)
+ */
+.no-results {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+}
+
+.no-results::before {
+    content: "🔍";
+    display: block;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+
+/* ==================== IMAGES SECTION LAYOUT ==================== */
+/**
+ * Styling for the Received and After Service images
+ * Uses CSS Grid for side-by-side layout on larger screens
+ */
+.status-images-section {
+    display: grid;
+    grid-template-columns: 1fr; /* Default to single column (mobile) */
+    gap: 2rem;
+    margin-top: 2rem;
+    border-top: 2px solid var(--border);
+    padding-top: 2rem;
+}
+
+@media (min-width: 768px) {
+    .status-images-section {
+        grid-template-columns: 1fr 1fr; /* Two columns on desktop */
+    }
+}
+
+.status-images-section h4 {
+    color: var(--text-main);
+    font-size: 1.1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed var(--border);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Image container specific styling */
+#received-images-container,
+#after-images-container {
+    background: var(--bg-body); /* Slightly different bg */
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+/* Dark mode adjustments for images section */
+[data-theme="dark"] #received-images-container,
+[data-theme="dark"] #after-images-container {
+    background: rgba(255, 255, 255, 0.05); /* Subtle highlight in dark mode */
+}
+
+
+    margin-top: 1rem;
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+/**
+ * Mobile optimizations
+ */
+@media (max-width: 768px) {
+    .container {
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+    
+    .container h2 {
+        font-size: 1.5rem;
+    }
+    
+    #statusForm,
+    #result {
+        padding: 1.5rem;
+    }
+    
+    #result p {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .status-badge {
+        margin-top: 0.5rem;
+    }
+    
+    #statusForm input {
+        font-size: 16px;                    /* Prevent iOS zoom */
+    }
+}
+
+/* ==================== DARK MODE OPTIMIZATIONS ==================== */
+/**
+ * Enhanced dark mode styling for status checker
+ * Better contrast and visual hierarchy in dark environments
+ */
+[data-theme="dark"] #statusForm {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: var(--border);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] #statusForm input {
+    background: var(--bg-body);
+    border-color: var(--border);
+    color: var(--text-main);
+}
+
+[data-theme="dark"] #statusForm input:focus {
+    background: rgba(59, 130, 246, 0.05);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+[data-theme="dark"] #statusForm input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+[data-theme="dark"] #statusForm button:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Dark mode results card */
+[data-theme="dark"] #result {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: var(--border);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] #result h3 {
+    color: var(--text-main);
+}
+
+[data-theme="dark"] #result p strong {
+    color: var(--text-main);
+}
+
+[data-theme="dark"] #result p span {
+    color: var(--text-main);
+}
+
+/* Dark mode status badges - enhanced contrast */
+[data-theme="dark"] .status-badge[style*="orange"] {
+    background: #f59e0b;
+    color: #78350f;
+}
+
+[data-theme="dark"] .status-badge[style*="007bff"],
+[data-theme="dark"] .status-badge[style*="rgb(0, 123, 255)"] {
+    background: #3b82f6;
+    color: #eff6ff;
+}
+
+[data-theme="dark"] .status-badge[style*="green"] {
+    background: #10b981;
+    color: #064e3b;
+}
+
+/* Dark mode autofill fix */
+[data-theme="dark"] input:-webkit-autofill,
+[data-theme="dark"] input:-webkit-autofill:hover,
+[data-theme="dark"] input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-main);
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-body) inset;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ==================== PRINT STYLES ==================== */
+/**
+ * Professional Invoice/Receipt Layout for Printing
+ * Hides normal web content and shows a structured document
+ */
+@media print {
+    /* 1. RESET & SETUP */
+    * {
+        -webkit-print-color-adjust: exact !important; /* Force background colors */
+        print-color-adjust: exact !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    @page {
+        margin: 0; /* Use minimal browser margins */
+        size: auto;
+    }
+
+    html, body {
+        background: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        width: 100% !important;
+        display: block !important; /* Override flex centering */
+    }
+
+    /* 2. HIDE WEB UI ELEMENTS */
+    /* Hide everything that is a direct child of body, EXCEPT the print invoice */
+    body > *:not(#print-invoice) {
+        display: none !important;
+    }
+
+    #chatbot-container, .menu-overlay {
+        display: none !important;
+    }
+
+    /* 3. SHOW & STYLE INVOICE */
+    #print-invoice {
+        display: block !important;
+        width: 100%;
+        max-width: 100%; /* Use full width */
+        padding: 2cm; /* Standard print margin */
+        box-sizing: border-box;
+        font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+        color: #1a1a1a;
+        line-height: 1.5;
+    }
+
+    /* Header Section */
+    .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 2px solid #000;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+    }
+
+    .company-details h1 {
+        font-size: 24pt;
+        font-weight: 800;
+        color: #000;
+        margin: 0 0 5px 0;
+        text-transform: uppercase;
+        animation: none !important; /* Remove bounce animation */
+    }
+
+    .company-details h1::before {
+        display: none; /* Remove the emoji icon */
+    }
+
+    .company-details p {
+        margin: 2px 0;
+        font-size: 10pt;
+        color: #555;
+    }
+
+    .invoice-meta {
+        text-align: right;
+    }
+
+    .invoice-meta h2 {
+        font-size: 16pt;
+        color: #000;
+        margin: 0 0 15px 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .meta-row {
+        margin-bottom: 5px;
+        font-size: 11pt;
+    }
+
+    .meta-row span:first-child {
+        font-weight: 600;
+        margin-right: 10px;
+        color: #555;
+    }
+
+    /* Body Section */
+    .invoice-body {
+        margin-bottom: 40px;
+    }
+
+    .invoice-section {
+        margin-bottom: 30px;
+    }
+
+    .invoice-section h3 {
+        font-size: 12pt;
+        text-transform: uppercase;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .invoice-section p {
+        font-size: 11pt;
+        margin-bottom: 10px;
+    }
+
+    /* Reference Code Box */
+    .ref-box {
+        background: #f4f4f4 !important;
+        border: 2px solid #000;
+        padding: 15px 20px;
+        margin: 20px 0;
+        display: inline-block;
+        border-radius: 4px;
+        min-width: 300px;
+        text-align: center;
+    }
+
+    .ref-box .label {
+        display: block;
+        font-size: 10pt;
+        text-transform: uppercase;
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .ref-box .code {
+        display: block;
+        font-family: 'Courier New', monospace;
+        font-size: 24pt;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #000;
+    }
+
+    .instruction {
+        font-style: italic;
+        color: #555;
+        font-size: 10pt !important;
+    }
+
+    ol {
+        padding-left: 20px;
+    }
+
+    ol li {
+        margin-bottom: 5px;
+        font-size: 11pt;
+    }
+
+    /* Footer Section */
+    .invoice-footer {
+        text-align: center;
+        margin-top: 50px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+    }
+
+    .invoice-footer p {
+        margin: 5px 0;
+        font-size: 11pt;
+        font-weight: 600;
+    }
+
+    .invoice-footer .small {
+        font-size: 9pt;
+        font-weight: 400;
+        color: #888;
+    }
+}
+
+
+/* ==================== PRINT BUTTON STYLES ==================== */
+/* Style the print button on the status page to match confirmation page */
+#printBtn {
+    /* Display is handled by JS (toggles inline-flex) */
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+#printBtn::before {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 6 2 18 2 18 9'%3E%3C/polyline%3E%3Cpath d='M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2'%3E%3C/path%3E%3Crect x='6' y='14' width='12' height='8'%3E%3C/rect%3E%3C/svg%3E") no-repeat center;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 6 2 18 2 18 9'%3E%3C/polyline%3E%3Cpath d='M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2'%3E%3C/path%3E%3Crect x='6' y='14' width='12' height='8'%3E%3C/rect%3E%3C/svg%3E") no-repeat center;
+}
+
+#printBtn:hover {
+    transform: translateY(-2px);
+}
+

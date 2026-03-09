@@ -1,0 +1,247 @@
+/* 
+======================================
+INDEX.CSS - Homepage-Specific Styles
+======================================
+Purpose: Additional styles specific to index.html
+Note: This file extends style.css (main stylesheet)
+      Most styles are in style.css - this file contains page-specific overrides and additions
+Structure:
+1. News Widget Styles
+2. Services Grid Layout
+3. Service Card Staggered Animation
+4. News Card Update Animation
+5. Chatbot Widget Overrides
+====================================== 
+*/
+
+/* ==================== 1. TECH NEWS WIDGET ==================== */
+/**
+ * News section styling
+ * Extends the base news-widget styles from style.css
+ */
+#news-widget {
+    margin-top: 4rem;
+}
+
+/**
+ * Responsive news grid
+ * auto-fit: Automatically determines number of columns based on screen width
+ * minmax(280px, 1fr): Each card minimum 280px, maximum equal share of space
+ * Mobile: Automatically becomes single column when screen < 280px
+ */
+#news-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    gap: 20px;
+    padding: 0;
+    width: 100%;                              /* Full width */
+    max-width: 100%;                          /* Never overflow */
+    box-sizing: border-box;                   /* Include padding in width */
+}
+
+/**
+ * Individual news card styling
+ * Extends base card styles with hover effects
+ */
+.news-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;                         /* Clip image corners */
+    transition: transform 0.2s;
+    box-shadow: var(--shadow);
+    width: 100%;                              /* Full width of grid cell */
+    max-width: 100%;                          /* Prevent overflow */
+    box-sizing: border-box;                   /* Include border in width */
+}
+
+.news-card:hover {
+    transform: translateY(-5px);              /* Lift effect on hover */
+}
+
+/* News card image sizing */
+.news-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;                        /* Crop image to fit without stretching */
+}
+
+/* News card text content */
+.news-content {
+    padding: 15px;
+    width: 100%;                              /* Full width */
+    box-sizing: border-box;                   /* Include padding in width */
+}
+
+.news-content h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    word-wrap: break-word;                    /* Break long words */
+    overflow-wrap: break-word;                /* Prevent overflow */
+    hyphens: auto;                            /* Add hyphens if needed */
+}
+
+.news-content h4 a {
+    color: var(--text-main);
+    text-decoration: none;
+    word-break: break-word;                   /* Prevent link overflow */
+    display: inline;                          /* Ensure proper wrapping */
+}
+
+.news-content h4 a:hover {
+    color: var(--primary);                    /* Highlight link on hover */
+}
+
+.news-content p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0;
+    word-wrap: break-word;                    /* Break long words */
+    overflow-wrap: break-word;                /* Prevent text overflow */
+    line-height: 1.5;                         /* Better readability */
+}
+
+/* ==================== 2. SERVICES GRID LAYOUT ==================== */
+/**
+ * Responsive services grid
+ * On desktop: 2 columns (phone repair | laptop repair)
+ * On mobile: Stacks to 1 column
+ */
+.services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* ==================== 3. SERVICE CARD STAGGERED ANIMATION ==================== */
+/**
+ * Creates "cascading" appearance effect
+ * Each card appears slightly after the previous one
+ * Works with fadeUp animation from style.css
+ */
+.service-card:nth-child(1) {
+    animation-delay: 0.2s;                    /* First card: 0.2s delay */
+}
+
+.service-card:nth-child(2) {
+    animation-delay: 0.4s;                    /* Second card: 0.4s delay */
+}
+
+.service-card:nth-child(3) {
+    animation-delay: 0.6s;                    /* Third card: 0.6s delay (if exists) */
+}
+
+/* ==================== 4. NEWS CARD UPDATE ANIMATION ==================== */
+/**
+ * Smooth transition when news articles rotate
+ * Controlled by index.js (startRandomUpdates function)
+ * Process:
+ * 1. JavaScript adds .updating class
+ * 2. Card fades out and shrinks
+ * 3. Content updates
+ * 4. Class removed, card fades back in
+ */
+.news-card {
+    transition: opacity 0.5s ease-in-out, transform 0.2s;
+}
+
+/**
+ * Updating state - triggered by JavaScript during content swap
+ * Creates smooth fade + scale effect
+ */
+.news-card.updating {
+    opacity: 0;                               /* Fade to invisible */
+    transform: scale(0.95);                   /* Shrink slightly (95% of original size) */
+}
+
+/* ==================== 5. CHATBOT WIDGET OVERRIDES ==================== */
+/**
+ * Page-specific chatbot positioning
+ * Note: These override the base chatbot styles from style.css if needed
+ * Currently maintains the same fixed-position design
+ */
+
+/* Chatbot toggle button (circular icon in corner) */
+#chatbot-toggle {
+    position: fixed;                          /* Stays in corner when scrolling */
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;                       /* Perfect circle */
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    z-index: 1000;                            /* Above other content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+#chatbot-toggle:hover {
+    transform: scale(1.1);                    /* Grow 10% on hover */
+}
+
+/* Chatbot window (hidden by default) */
+#chatbot-window {
+    position: fixed;
+    bottom: 90px;                             /* Above the toggle button */
+    right: 20px;
+    width: 300px;
+    height: 400px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;                            /* Hidden - toggled by JavaScript */
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Chat window header */
+.chat-header {
+    background: var(--primary);
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Messages area (scrollable) */
+#chatbot-messages {
+    flex: 1;                                  /* Take up remaining space */
+    padding: 15px;
+    overflow-y: auto;                         /* Scroll if messages overflow */
+    font-size: 0.9rem;
+}
+
+/* Input area at bottom */
+.chat-input-area {
+    display: flex;
+    border-top: 1px solid var(--border);
+}
+
+.chat-input-area input {
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    flex: 1;                                  /* Take up all available space */
+}
+
+.chat-input-area button {
+    background: var(--bg-body);
+    border: none;
+    color: var(--primary);
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 15px;
+}

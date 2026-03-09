@@ -1,0 +1,852 @@
+/* 
+======================================
+ADMIN.CSS - Admin Dashboard Styles
+======================================
+Purpose: Styles specific to admin.html (admin panel)
+Features:
+- Login overlay (password protection screen)
+- Bookings management table
+- Status dropdown styling
+- Admin-specific buttons and controls
+Dependencies: Requires style.css (loaded first)
+====================================== 
+*/
+
+/* ==================== LOGIN OVERLAY ==================== */
+/**
+ * Fullscreen overlay that covers the page until password is entered
+ * Hidden by JavaScript (admin.js) after successful login
+ */
+#loginOverlay {
+    position: fixed;                          /* Cover entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-body);               /* Solid background (not transparent) */
+    z-index: 1500;                            /* Above content but below chatbot */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Login form container */
+#loginOverlay .text-center {
+    background: var(--bg-card);
+    padding: 3rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    min-width: 350px;
+}
+
+#loginOverlay h2 {
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+/* Password input field */
+#adminPass {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-body);
+    color: var(--text-main);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+#adminPass:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Login button - specific to login overlay only */
+#loginOverlay .text-center button {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#loginOverlay .text-center button:hover {
+    background: var(--primary-hover);
+}
+
+/* ==================== DASHBOARD HEADER ==================== */
+/**
+ * Dashboard title and description
+ */
+h1 {
+    color: var(--text-main);
+    margin: 2rem 0 0.5rem 0;
+    text-align: center;
+}
+
+h1 + p {
+    text-align: center;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+/* ==================== BOOKINGS TABLE ==================== */
+/**
+ * Data table showing all repair bookings
+ * Features: Responsive, striped rows, hover effects
+ */
+table {
+    width: 100%;
+    max-width: 1400px;
+    margin: 2rem auto;
+    border-collapse: collapse;              /* Remove spacing between cells */
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+/* Table header */
+thead {
+    background: var(--primary);
+    color: white;
+}
+
+thead th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Table body rows */
+tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.2s;
+}
+
+/* Striped rows for better readability */
+tbody tr:nth-child(even) {
+    background: var(--bg-body);
+}
+
+/* Hover effect on rows */
+tbody tr:hover {
+    background: rgba(37, 99, 235, 0.05);    /* Subtle blue highlight */
+}
+
+/* Table cells */
+tbody td {
+    padding: 1rem;
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+/* Small text (e.g., phone numbers under customer name) */
+tbody td small {
+    display: block;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+/* ==================== STATUS DROPDOWN ==================== */
+/**
+ * Dropdown for updating booking status
+ * Color-coded based on current status
+ */
+.status-select {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-body);
+    color: var(--text-main);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.status-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+/* Status badge styling (if used) */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Status colors */
+.status-pending { background: #fbbf24; color: #78350f; }
+.status-confirmed { background: #60a5fa; color: #1e3a8a; }
+.status-in-progress { background: #3b82f6; color: white; }
+.status-ready { background: #10b981; color: #065f46; }
+.status-completed { background: #22c55e; color: #14532d; }
+.status-canceled { background: #ef4444; color: white; }
+
+/* ==================== ACTION BUTTONS ==================== */
+/**
+ * Update buttons in the action column
+ */
+tbody button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+tbody button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+tbody button:active {
+    transform: translateY(0);
+}
+
+/* ==================== CHATBOT OVERRIDES ==================== */
+/**
+ * Ensure chatbot works properly on admin page
+ * Override any conflicting admin styles
+ */
+#chatbot-container {
+    z-index: 2100 !important;                /* Above login overlay */
+}
+
+#chatbot-toggle {
+    width: 60px !important;
+    height: 60px !important;
+    padding: 15px !important;
+    border-radius: 50% !important;
+    background: var(--primary) !important;
+    color: white !important;
+    border: none !important;
+    font-size: 1.5rem !important;
+    cursor: pointer !important;
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: var(--shadow) !important;
+    transition: transform 0.2s, background-color 0.3s !important;
+}
+
+#chatbot-toggle:hover {
+    background: var(--primary-hover) !important;
+    transform: scale(1.1) !important;
+}
+
+#chatbot-window {
+    z-index: 2100 !important;
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+/**
+ * Mobile-friendly table adjustments
+ * On small screens, table becomes scrollable
+ */
+@media (max-width: 1024px) {
+    table {
+        display: block;
+        overflow-x: auto;                   /* Horizontal scroll on mobile */
+        white-space: nowrap;
+    }
+    
+    thead th,
+    tbody td {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #loginOverlay .text-center {
+        min-width: 90%;
+        padding: 2rem;
+    }
+}
+
+/* ==================== DARK MODE OPTIMIZATIONS ==================== */
+/**
+ * Enhanced dark mode for admin dashboard
+ * Professional dark theme for extended use
+ */
+[data-theme="dark"] #loginOverlay {
+    background: var(--bg-body);
+}
+
+[data-theme="dark"] #loginOverlay .text-center {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] #loginOverlay h2 {
+    color: var(--text-main);
+}
+
+[data-theme="dark"] #adminPass {
+    background: var(--bg-body);
+    border-color: var(--border);
+    color: var(--text-main);
+}
+
+[data-theme="dark"] #adminPass:focus {
+    background: rgba(59, 130, 246, 0.05);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+[data-theme="dark"] #loginOverlay .text-center button {
+    background: var(--primary);
+}
+
+[data-theme="dark"] #loginOverlay .text-center button:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Dark mode table */
+[data-theme="dark"] table {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] thead {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+[data-theme="dark"] thead th {
+    color: var(--text-main);
+    border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] tbody tr {
+    border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] tbody tr:nth-child(even) {
+    background: rgba(51, 65, 85, 0.3);
+}
+
+[data-theme="dark"] tbody tr:hover {
+    background: rgba(59, 130, 246, 0.08);
+}
+
+[data-theme="dark"] tbody td {
+    color: var(--text-main);
+}
+
+[data-theme="dark"] tbody td small {
+    color: var(--text-muted);
+}
+
+/* Dark mode status select */
+[data-theme="dark"] .status-select {
+    background: var(--bg-body);
+    border-color: var(--border);
+    color: var(--text-main);
+    color-scheme: dark; /* Force browser to render native controls in dark mode */
+}
+
+/* Fix for dark mode dropdown options */
+[data-theme="dark"] .status-select option {
+    background-color: var(--bg-card); /* Ensure dropdown background is dark */
+    color: var(--text-main);
+}
+
+[data-theme="dark"] .status-select:focus {
+    border-color: var(--primary);
+    background: rgba(59, 130, 246, 0.05);
+}
+
+/* Dark mode status badges - enhanced contrast */
+[data-theme="dark"] .status-pending {
+    background: #fbbf24;
+    color: #78350f;
+}
+
+[data-theme="dark"] .status-confirmed {
+    background: #60a5fa;
+    color: #1e3a8a;
+}
+
+[data-theme="dark"] .status-in-progress {
+    background: #3b82f6;
+    color: #eff6ff;
+}
+
+[data-theme="dark"] .status-ready {
+    background: #10b981;
+    color: #064e3b;
+}
+
+[data-theme="dark"] .status-completed {
+    background: #22c55e;
+    color: #14532d;
+}
+
+[data-theme="dark"] .status-canceled {
+    background: #ef4444;
+    color: #fef2f2;
+}
+
+/* Dark mode action buttons */
+[data-theme="dark"] tbody button {
+    background: var(--primary);
+}
+
+[data-theme="dark"] tbody button:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+/* Dark mode image button */
+[data-theme="dark"] .btn-images {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+[data-theme="dark"] .btn-images:hover {
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Dark mode modal */
+[data-theme="dark"] .modal {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="dark"] .modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .modal-content h2 {
+    color: var(--text-main);
+}
+
+[data-theme="dark"] .close-modal {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .close-modal:hover {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--text-main);
+}
+
+[data-theme="dark"] .image-stage h3 {
+    color: var(--text-main);
+    border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .no-images {
+    color: var(--text-muted);
+    border-color: var(--border);
+    background: rgba(51, 65, 85, 0.2);
+}
+
+[data-theme="dark"] .image-card {
+    background: var(--bg-body);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .image-card:hover {
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+[data-theme="dark"] .image-card-info {
+    background: rgba(51, 65, 85, 0.3);
+}
+
+[data-theme="dark"] .image-card-filename {
+    color: var(--text-main);
+}
+
+[data-theme="dark"] .image-card-meta {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .upload-section input[type="file"] {
+    background: var(--bg-body);
+    border-color: var(--border);
+    color: var(--text-main);
+}
+
+[data-theme="dark"] .upload-section button {
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+[data-theme="dark"] .upload-section button:hover {
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+}
+ 
+ / *   = = = = = = = = = = = = = = = = = = = =   A D M I N   H E A D E R   = = = = = = = = = = = = = = = = = = = =   * / 
+ 
+ / * * 
+ 
+   *   H e a d e r   s e c t i o n   c o n t a i n i n g   t i t l e   a n d   c o n t r o l s   ( t h e m e / l a n g ) 
+ 
+   * / 
+ 
+ . a d m i n - h e a d e r   { 
+ 
+         d i s p l a y :   f l e x ; 
+ 
+         j u s t i f y - c o n t e n t :   s p a c e - b e t w e e n ; 
+ 
+         a l i g n - i t e m s :   c e n t e r ; 
+ 
+         m a r g i n - b o t t o m :   2 r e m ; 
+ 
+         p a d d i n g - b o t t o m :   1 r e m ; 
+ 
+         b o r d e r - b o t t o m :   1 p x   s o l i d   v a r ( - - b o r d e r ) ; 
+ 
+         f l e x - w r a p :   w r a p ; 
+ 
+         g a p :   1 r e m ; 
+ 
+ } 
+ 
+ 
+ 
+ . a d m i n - h e a d e r   . h e a d e r - t i t l e   h 1   { 
+ 
+         m a r g i n - b o t t o m :   0 . 2 5 r e m ; 
+ 
+ } 
+ 
+ 
+ 
+ . a d m i n - h e a d e r   . h e a d e r - t i t l e   p   { 
+ 
+         c o l o r :   v a r ( - - t e x t - m u t e d ) ; 
+ 
+         m a r g i n :   0 ; 
+ 
+ } 
+ 
+ 
+ 
+ . a d m i n - h e a d e r   . h e a d e r - c o n t r o l s   { 
+ 
+         d i s p l a y :   f l e x ; 
+ 
+         a l i g n - i t e m s :   c e n t e r ; 
+ 
+         g a p :   0 . 5 r e m ; 
+ 
+ } 
+ 
+ 
+ 
+ / *   R e s e t   a n y   u n w a n t e d   m a r g i n s   f r o m   g l o b a l   b t n - i c o n   s t y l e s   i f   n e c e s s a r y   * / 
+ 
+ . a d m i n - h e a d e r   . b t n - i c o n   { 
+ 
+         m a r g i n - l e f t :   0 ; 
+ 
+ } 
+ 
+ 
+/* Force dark background for options in dark mode */
+[data-theme='dark'] .status-select option {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+}
+
+/* ==================== OWNER CONTROL PANEL ==================== */
+.owner-panel {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    margin: 2rem auto;
+    max-width: 1200px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+/* Light mode specific override to match original design */
+[data-theme="light"] .owner-panel {
+    background: #e3f2fd;
+    border-color: #2196F3;
+}
+
+.owner-panel h3 {
+    margin-top: 0;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+[data-theme="light"] .owner-panel h3 {
+    color: #0d47a1;
+}
+
+.owner-controls-wrapper {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.owner-control-section {
+    flex: 1;
+    min-width: 300px;
+}
+
+.owner-control-section.border-left {
+    border-left: 2px solid var(--border);
+    padding-left: 30px;
+}
+
+[data-theme="light"] .owner-control-section.border-left {
+    border-left-color: #bbdefb;
+}
+
+@media (max-width: 768px) {
+    .owner-control-section.border-left {
+        border-left: none;
+        border-top: 2px solid var(--border);
+        padding-left: 0;
+        padding-top: 20px;
+    }
+}
+
+.control-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.control-group input {
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-body);
+    color: var(--text-main);
+    flex: 1;
+}
+
+.owner-panel button {
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+}
+
+.owner-panel button:hover {
+    opacity: 0.9;
+}
+
+.owner-panel .btn-primary {
+    background: #2196F3;
+}
+
+.owner-panel .btn-warning {
+    background: #ef6c00;
+}
+
+.status-msg {
+    margin-bottom:0;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* ======================================
+   ADMIN FIXES - Merged from admin-fixes.css
+   ====================================== */
+
+/* ==================== CENTERED HEADER LAYOUT ==================== */
+.admin-header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.admin-header .header-title {
+    text-align: center;
+    flex: 1;
+}
+
+.admin-header .header-title h1 {
+    margin: 0 0 0.5rem 0;
+    text-align: center;
+}
+
+.admin-header .header-title p {
+    text-align: center;
+    margin: 0;
+}
+
+.admin-header .header-controls {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.admin-header .btn-icon {
+    color: var(--text-main);
+}
+
+/* Language Toggle */
+.lang-toggle {
+    font-size: 0.9rem; 
+    font-weight: 700; 
+    border: 2px solid currentColor !important;
+    border-radius: 6px; 
+    padding: 4px 8px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-main);
+    background: transparent;
+}
+
+.lang-toggle:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
+}
+
+/* Log Out Button */
+.btn-logout {
+    font-size: 0.9rem; 
+    font-weight: 600; 
+    border: 2px solid var(--border);
+    border-radius: 6px; 
+    padding: 4px 12px;
+    margin-left: 10px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-main); 
+    background: transparent;
+    cursor: pointer;
+    height: 32px;
+}
+
+.btn-logout:hover {
+    background-color: var(--text-main);
+    color: var(--bg-body);
+    border-color: var(--text-main);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+    .admin-header {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .admin-header .header-controls {
+        position: static;
+        transform: none;
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ==================== FORCE LIGHT THEME ON LOGIN ==================== */
+#loginOverlay {
+    background: #f8f9fa !important;
+}
+
+#loginOverlay .text-center {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+#loginOverlay h2 {
+    color: #1a202c !important;
+}
+
+#adminPass {
+    background: #ffffff !important;
+    border-color: #cbd5e0 !important;
+    color: #2d3748 !important;
+}
+
+/* ==================== OWNER PANEL ALIGNMENT ==================== */
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.control-group input,
+.control-group button {
+    height: 38px !important;
+    padding: 0 15px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+}
+
+.control-group input {
+    flex: 1;
+    min-width: 150px;
+}
+
+/* ==================== TABLE BUTTON ALIGNMENT ==================== */
+#bookingTable td .btn-update,
+#bookingTable td .btn-delete {
+    height: 34px !important;
+    padding: 0 12px !important;
+    font-size: 0.85rem !important; 
+    line-height: normal !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+    border-radius: 6px !important;
+    margin: 0 2px !important;
+}
+
+#bookingTable td .btn-delete {
+    background-color: #ef4444;
+    color: white;
+    min-width: 34px;
+}
+
+#bookingTable td .btn-delete:hover {
+    background-color: #dc2626;
+}
+
+#bookingTable td:nth-last-child(2) {
+    white-space: nowrap;
+}
+

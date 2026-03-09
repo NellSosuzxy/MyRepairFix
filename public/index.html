@@ -1,0 +1,414 @@
+<!-- 
+===============================================
+INDEX.HTML - Homepage
+===============================================
+Main landing page for MyRepairFix website
+Features:
+- Animated logo preloader (first visit only)
+- Hero section with call-to-action
+- Services showcase (Smartphone & Laptop repair)
+- Project gallery (before/after photos)
+- Live tech news feed (from NewsAPI)
+- Social media links
+- Floating chatbot
+
+Languages: English & Malay (toggle with 🇲🇾/🇬🇧 button)
+Themes: Light & Dark mode (toggle with 🌓 button)
+===============================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Character encoding for proper text display -->
+    <meta charset="UTF-8">
+    
+    <!-- Prevent referrer leakage when loading external images -->
+    <meta name="referrer" content="no-referrer">
+    
+    <!-- Responsive design: makes site mobile-friendly -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Page title (shows in browser tab) -->
+    <title>MyRepairFix - Fast & Reliable Gadget Repair</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Professional smartphone and laptop repair services. Fast, reliable, and affordable gadget repairs with quality parts and expert technicians. Book your appointment today!">
+    <meta name="keywords" content="phone repair, laptop repair, screen replacement, battery replacement, gadget repair, smartphone repair, computer repair, device repair">
+    <meta name="author" content="MyRepairFix">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Meta Tags (for social sharing) -->
+    <meta property="og:title" content="MyRepairFix - Fast & Reliable Gadget Repair">
+    <meta property="og:description" content="Professional smartphone and laptop repair services. Book your appointment today!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://myrepairfix.com">
+    <meta property="og:image" content="images/og-image.jpg">
+    <meta property="og:site_name" content="MyRepairFix">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MyRepairFix - Fast & Reliable Gadget Repair">
+    <meta name="twitter:description" content="Professional smartphone and laptop repair services. Book your appointment today!">
+    <meta name="twitter:image" content="images/og-image.jpg">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="MyRepairFix">
+    <link rel="apple-touch-icon" href="images/logo1.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon (icon in browser tab) -->
+    <link rel="icon" type="image/png" href="images/logo1.png">
+
+    <!-- Google Fonts: Inter font family for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">   <!-- Global styles -->
+    <link rel="stylesheet" href="css/index.css">   <!-- Page-specific styles -->
+</head>
+
+<body class="home-page">
+    <!-- ==================== PRELOADER ==================== -->
+    <!-- Animated logo that shows only on first visit -->
+    <div id="preloader">
+        <img src="images/logo1.png" alt="MyRepairFix Logo" class="logo-animate">
+    </div>
+    
+    <!-- Skip animation if user already visited this session -->
+    <script>
+        if (sessionStorage.getItem('introShown')) {
+            document.getElementById('preloader').style.display = 'none';
+        }
+    </script>
+
+    <!-- ==================== HEADER / NAVIGATION ==================== -->
+    <!-- Mobile menu overlay (dark backdrop when menu is open) -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    
+    <header>
+        <!-- Logo and site title -->
+        <div class="flex-center gap-small">
+            <img src="images/logo1.png" id="header-logo" alt="MyRepairFix Logo" class="logo-header" style="opacity: 0;">
+            <h1>MyRepairFix</h1>
+        </div>
+
+        <!-- Hamburger menu button (mobile only) -->
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Navigation menu with language/theme toggles -->
+        <nav id="navMenu">
+            <a href="index.html" data-i18n="nav_home">Home</a>
+            <a href="booking.html" data-i18n="nav_book">Book Now</a>
+            <a href="status.html" data-i18n="nav_status">Check Status</a>
+            <!-- Theme toggle button -->
+            <button class="btn-icon theme-toggle" aria-label="Toggle theme">
+                <svg class="theme-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g class="sun-rays">
+                        <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </g>
+                    <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+                    <path class="moon-crescent" d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9c.32 0 .63-.02.94-.06A7 7 0 0 1 9 14c0-3.87 3.13-7 7-7 .32 0 .63.02.94.06C16.42 4.56 14.35 3 12 3z" fill="currentColor"/>
+                </svg>
+            </button>
+            <!-- Language toggle button -->
+            <button class="btn-icon lang-toggle">EN | MY</button>
+        </nav>
+    </header>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main>
+        <!-- Hero Section: Main banner with tagline and CTA -->
+        <div class="hero">
+            <h2>FAST & RELIABLE GADGET REPAIR!</h2>
+            <p>Expert fixes for smartphones and laptops.</p>
+            <br>
+            <a href="booking.html" class="cta-button">BOOK APPOINTMENT NOW</a>
+        </div>
+
+        <!-- Container for main page content -->
+        <div class="container">
+            
+            <!-- ==================== ABOUT US SECTION ==================== -->
+            <div id="about-section" style="margin-top: 3rem; margin-bottom: 3rem;">
+                <div class="text-center">
+                    <h3 class="section-title" data-i18n="section_about">ABOUT US</h3>
+                </div>
+                <div class="about-content" style="background: var(--bg-card); padding: 2.5rem; border-radius: var(--radius); box-shadow: var(--shadow); max-width: 900px; margin: 2rem auto 0; text-align: center; border: 1px solid var(--border);">
+                    <p data-i18n="about_text" style="color: var(--text-main); line-height: 1.8; font-size: 1.05rem; margin: 0;"></p>
+                </div>
+            </div>
+
+            <!-- ==================== SERVICES SECTION ==================== -->
+           <div class="text-center" style="margin-top: 5rem;">
+                <h3 class="section-title" data-i18n="section_services">OUR SERVICES</h3>
+            </div>
+            
+            <!-- Service cards grid (2 columns) -->
+            <div class="services">
+                
+                <!-- Service Card 1: Smartphone Repair -->
+                <div class="service-card">
+                    <h3 data-i18n="srv_phone_title">Smartphone Repair</h3>
+                    <p data-i18n="srv_phone_intro">We provide professional repair for Apple, Samsung, Xiaomi, Oppo, Vivo, Huawei, and more.</p>
+                    
+                    <!-- Detailed service list (changes with language) -->
+                    <ul class="service-list" id="srv_phone_list">
+                        <li>Screen replacement (cracked, broken, unresponsive touch)</li>
+                        <li>Battery replacement (fast drain, swollen, random shutdown)</li>
+                        <li>Charging port repair & charging issues</li>
+                        <li>Water damage inspection and repair</li>
+                        <li>Camera, speaker, microphone & button issues</li>
+                        <li>Software troubleshooting (bootloop, stuck logo)</li>
+                        <li>Full device inspection and diagnosis</li>
+                    </ul>
+
+                    <p class="service-note" data-i18n="srv_phone_note">
+                        We use proper tools and quality parts to ensure safe repairs.
+                    </p>
+                </div>
+
+                <!-- ==================== Service Card 2: Laptop & Computer Repair ==================== -->
+                <!-- Second service card showing PC/laptop repair offerings -->
+                <div class="service-card">
+                    <!-- Service title with emoji and i18n support -->
+                    <h3 data-i18n="srv_pc_title">Laptop & Computer Repair</h3>
+                    
+                    <!-- Service description -->
+                    <p data-i18n="srv_pc_intro">Repair services suitable for students, office users, and small businesses.</p>
+                    
+                    <!-- 
+                        Service list for PC repairs
+                        NOTE: This list content is REPLACED by JavaScript in global.js
+                        The updateServiceLists() function swaps this HTML based on selected language
+                        See global.js for the English/Malay content versions
+                    -->
+                    <ul class="service-list" id="srv_pc_list">
+                        <li>Operating system installation (Windows / Linux)</li>
+                        <li>Hardware upgrades (SSD & RAM) to improve performance</li>
+                        <li>Internal cleaning to solve overheating problems</li>
+                        <li>Keyboard, touchpad & screen replacement</li>
+                        <li>Slow performance, freezing, or power issues</li>
+                        <li>Virus & malware removal</li>
+                        <li>Motherboard and internal hardware diagnostics</li>
+                    </ul>
+
+                    <!-- Service note with quality assurance message -->
+                    <p class="service-note" data-i18n="srv_pc_note">
+                        👉 Every repair is handled carefully for long-term stability.
+                    </p>
+                </div>
+
+            </div>
+            <!-- End of services-grid -->
+
+            <!-- ==================== PROJECT GALLERY SECTION ==================== -->
+            <!-- 
+                Gallery showcasing 6 completed repair projects in a 3x2 grid layout
+                Grid is achieved via CSS (see index.css: .gallery { display: grid; grid-template-columns: repeat(3, 1fr); })
+            -->
+            <div class="text-center" style="margin-top: 3rem;">
+                <h3 class="section-title" data-i18n="section_gallery">PROJECT GALLERY</h3>
+            </div>
+            
+            <!-- 
+                Gallery container - displays 6 repair examples
+                Layout: 3 columns x 2 rows on desktop (responsive on mobile)
+            -->
+            <div class="gallery">
+                
+                <!-- Gallery Item 1: Screen Replacement -->
+                <div class="gallery-item">
+                    <img src="images/crack screen.png" alt="Screen Repair">
+                    <div class="gallery-caption">
+                        <h4 data-i18n="gallery_screen">Screen Replacement</h4>
+                        <p data-i18n="gallery_iphone">iPhone 13 Pro</p>
+                    </div>
+                </div>
+                
+                <!-- Gallery Item 2: Battery Replacement -->
+                <div class="gallery-item">
+                    <img src="images/battery.png" alt="Battery Replacement">
+                    <div class="gallery-caption">
+                        <h4 data-i18n="gallery_battery">Battery Replacement</h4>
+                        <p data-i18n="gallery_samsung">Samsung Galaxy</p>
+                    </div>
+                </div>
+                
+                <!-- Gallery Item 3: Water Damage Repair -->
+                <div class="gallery-item">
+                    <img src="images/restore.png" alt="Water Damage Repair">
+                    <div class="gallery-caption">
+                        <h4 data-i18n="gallery_water">Water Damage</h4>
+                        <p data-i18n="gallery_macbook">MacBook Pro</p>
+                    </div>
+                </div>
+                
+                <!-- Gallery Item 4: Keyboard Repair -->
+                <div class="gallery-item">
+                    <img src="images/keyboard.png" alt="Keyboard Repair">
+                    <div class="gallery-caption">
+                        <h4 data-i18n="gallery_keyboard">Keyboard Fix</h4>
+                        <p data-i18n="gallery_dell">Dell XPS</p>
+                    </div>
+                </div>
+                
+                <!-- Gallery Item 5: Charging Port Repair -->
+                <div class="gallery-item">
+                    <img src="images/charging port.png" alt="Port Repair">
+                    <div class="gallery-caption">
+                        <h4 data-i18n="gallery_port">Charging Port</h4>
+                        <p data-i18n="gallery_pixel">Google Pixel</p>
+                    </div>
+                </div>
+                
+                <!-- Gallery Item 6: OS Installation -->
+                <div class="gallery-item">
+                    <img src="images/os.png" alt="OS Install">
+                    <div class="gallery-caption">
+                        <h4 data-i18n="gallery_os">OS Installation</h4>
+                        <p data-i18n="gallery_windows">Windows 11</p>
+                    </div>
+                </div>
+                
+            </div>
+            <!-- End of gallery -->
+
+            <!-- ==================== LATEST TECH NEWS SECTION ==================== -->
+            <!-- 
+                News widget that displays 3 tech news articles from NewsAPI.org
+                Content is loaded dynamically by index.js (loadNews function)
+                Updates every 8 seconds with a random article from the fetched batch
+            -->
+            <div id="news-widget" class="card">
+                <!-- Section title with i18n support -->
+                <h3 data-i18n="section_news">📰 LATEST TECH NEWS</h3>
+                
+                <!-- 
+                    News grid container - initially shows skeleton loaders
+                    JavaScript replaces these with actual news cards after API fetch
+                    See index.js: generateCardHTML() for the card structure
+                -->
+                <div id="news-list" class="news-grid">
+                    <!-- Skeleton loaders (placeholder animation while loading news) -->
+                    <div class="skeleton" style="height: 200px"></div>
+                    <div class="skeleton" style="height: 200px"></div>
+                    <div class="skeleton" style="height: 200px"></div>
+                </div>
+            </div>
+            <!-- End of news-widget -->
+
+            <!-- ==================== SOCIAL MEDIA LINKS SECTION ==================== -->
+            <!-- Social media follow section with platform icons -->
+            <div class="social-links-container">
+                <!-- Section title with i18n support -->
+                <h3 class="text-center section-title" style="margin-bottom: 1rem;" data-i18n="follow_us">FOLLOW US</h3>
+                
+                <!-- Social media icons container -->
+                <div class="social-links">
+            
+                    <!-- Facebook Link -->
+                    <!-- Icon source: Flaticon CDN (high-quality PNG) -->
+                    <a href="https://www.facebook.com/" target="_blank" rel="noopener" title="Facebook">
+                        <img src="images/Facebook.png"
+                            alt="Facebook">
+                    </a>
+            
+                    <!-- Instagram Link -->
+                    <a href="https://www.instagram.com/" target="_blank" rel="noopener" title="Instagram">
+                        <img src="images/Instagram.png"
+                            alt="Instagram">
+                    </a>
+            
+                    <!-- TikTok Link -->
+                    <a href="https://tiktok.com/" target="_blank" rel="noopener" title="TikTok">
+                        <img src="images/Tiktok.png"
+                            alt="TikTok">
+                    </a>
+            
+                    <!-- X (Twitter) Link -->
+                    <!-- Special class "x-logo" applies brightness filter for dark mode theme -->
+                    <a href="https://twitter.com/" target="_blank" rel="noopener" title="X (Twitter)">
+                        <img src="images/X.png" class="x-logo"
+                            alt="X (Twitter)">
+                    </a>
+            
+                </div>
+            </div>
+            <!-- End of social-links-container -->
+        </div>
+        <!-- End of container -->
+    </main>
+    <!-- End of main content -->
+
+    <!-- ==================== FOOTER ==================== -->
+    <!-- Simple copyright footer -->
+    <footer>
+        &copy; 2025 MyRepairFix. All Rights Reserved.
+    </footer>
+
+    <!-- ==================== CHATBOT WIDGET ==================== -->
+    <!-- 
+        Fixed-position chatbot in bottom-right corner
+        Controlled by global.js (sendChat function)
+        Features:
+        - Toggle button to show/hide chat window
+        - Message history display
+        - Keyword-based auto-responses (hours, price, booking)
+    -->
+    <div id="chatbot-container">
+        <!-- Chatbot toggle button (💬 icon) -->
+        <button id="chatbot-toggle">💬</button>
+        
+        <!-- Chatbot window (hidden by default) -->
+        <div id="chatbot-window">
+            <!-- Chatbot header with title and close button -->
+            <div class="chatbot-header">
+                <span data-i18n="chatbot_title">MyRepairFix Helper</span>
+                <!-- Close button (✕ symbol) -->
+                <span id="chatbot-close-btn" style="cursor:pointer; float:right;">✕</span>
+            </div>
+            
+            <!-- Message display area -->
+            <div id="chatbot-messages">
+                <!-- Initial greeting message -->
+                <p><strong data-i18n="chatbot_bot">Bot:</strong> <span data-i18n="chatbot_greeting">Hello! How can I help you today?</span></p>
+            </div>
+            
+            <!-- Input area for user messages -->
+            <div class="chatbot-input-area">
+                <!-- Text input for user questions -->
+                <input type="text" id="chat-input" data-i18n-placeholder="chatbot_placeholder" placeholder="Ask about hours, price...">
+                <!-- Send button (triggers sendChat() from event listeners in global.js) -->
+                <button data-i18n="chatbot_send">Send</button>
+            </div>
+        </div>
+    </div>
+    <!-- End of chatbot-container -->
+
+    <!-- ==================== JAVASCRIPT FILES ==================== -->
+    <!-- Load shared functionality (theme, language, chatbot, preloader) -->
+    <script src="js/data/translations.js"></script>
+    <script src="js/global.js"></script>
+    <!-- Load page-specific functionality (news widget) -->
+    <script src="js/pages/home.js"></script>
+
+</body>
+
+</html>

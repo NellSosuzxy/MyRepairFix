@@ -1,0 +1,80 @@
+/* ======================================
+   CSS VARIABLES - Theme System
+   ====================================== 
+   Purpose: Centralized theme variables for consistent styling
+   Usage: Import this in all CSS files that need theme support
+   
+   Light mode variables are in :root
+   Dark mode overrides are in [data-theme="dark"]
+   ====================================== */
+
+:root {
+    /* ===== Color System ===== */
+    --primary: #2563eb;              /* Modern Blue - Primary brand color */
+    --primary-hover: #1d4ed8;        /* Darker blue for hover states */
+    --primary-light: #dbeafe;        /* Light blue for subtle accents */
+    
+    /* ===== Background Colors ===== */
+    --bg-body: #f8fafc;              /* Main page background */
+    --bg-card: #ffffff;              /* Card/container backgrounds */
+    --bg-overlay: rgba(255, 255, 255, 0.8); /* Glass effect overlay */
+    
+    /* ===== Text Colors ===== */
+    --text-main: #1e293b;            /* Primary text color */
+    --text-muted: #64748b;           /* Secondary text */
+    --text-on-primary: #ffffff;      /* Text on primary backgrounds */
+    
+    /* ===== UI Elements ===== */
+    --border: #e2e8f0;               /* Border color */
+    --border-focus: var(--primary);  /* Focused element borders */
+    
+    /* ===== Effects ===== */
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --blur: blur(10px);              /* Backdrop filter blur amount */
+    
+    /* ===== Spacing & Layout ===== */
+    --radius: 12px;                  /* Default border radius */
+    --radius-sm: 8px;               /* Small border radius */
+    --radius-lg: 16px;              /* Large border radius */
+    
+    --spacing-xs: 0.25rem;          /* 4px */
+    --spacing-sm: 0.5rem;           /* 8px */
+    --spacing-md: 1rem;             /* 16px */
+    --spacing-lg: 1.5rem;           /* 24px */
+    --spacing-xl: 2rem;             /* 32px */
+    --spacing-2xl: 3rem;            /* 48px */
+    
+    /* ===== Animation ===== */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/**
+ * Dark Mode Theme Override
+ * Activated when <html data-theme="dark"> is set
+ */
+[data-theme="dark"] {
+    /* ===== Color System ===== */
+    --primary: #3b82f6;              /* Slightly lighter blue for better contrast */
+    --primary-hover: #60a5fa;        /* Even lighter for hover */
+    --primary-light: #1e3a8a;        /* Darker blue for subtle accents */
+    
+    /* ===== Background Colors ===== */
+    --bg-body: #0f172a;              /* Deep slate background */
+    --bg-card: #1e293b;              /* Card backgrounds */
+    --bg-overlay: rgba(15, 23, 42, 0.8); /* Dark glass overlay */
+    
+    /* ===== Text Colors ===== */
+    --text-main: #f1f5f9;            /* Light text */
+    --text-muted: #94a3b8;           /* Muted light grey */
+    --text-on-primary: #ffffff;      /* White text on primary */
+    
+    /* ===== UI Elements ===== */
+    --border: #334155;               /* Darker borders */
+    
+    /* ===== Effects ===== */
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}

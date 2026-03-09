@@ -1,0 +1,272 @@
+<!-- 
+======================================
+STATUS.HTML - Booking Status Checker Page
+======================================
+Purpose: Allows customers to check repair status using reference code
+Features:
+- Reference code input with email verification
+- Status display (Pending/In Progress/Completed)
+- Device information display
+- Last update timestamp
+- Multi-language support
+- Dark mode compatible
+- Fetches data from backend API (GET /api/status?ref_code=XXX&email=XXX)
+====================================== 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Character encoding -->
+    <meta charset="UTF-8">
+    <!-- Responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Page title -->
+    <title>Check Status - MyRepairFix</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Track your device repair status online. Enter your reference code to see real-time updates on your repair.">
+    <meta name="robots" content="index, follow">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2563eb">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/logo1.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo1.png">
+    
+    <!-- Google Fonts - Inter font family -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Status checker-specific styles (results card, color-coded badges, animations) -->
+    <link rel="stylesheet" href="css/status.css">
+    <!-- Image gallery styles -->
+    <link rel="stylesheet" href="css/image-gallery.css">
+   
+</head>
+
+<body class="status-page">
+
+<!-- ==================== HEADER WITH NAVIGATION ==================== -->
+<!-- Mobile menu overlay (dark backdrop when menu is open) -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<header>
+    <!-- Logo and site title -->
+    <div class="flex-center gap-small">
+        <img src="images/logo1.png" alt="MyRepairFix Logo" class="logo-header" style="opacity: 1;">
+        <h1>MyRepairFix</h1>
+    </div>
+    
+    <!-- Hamburger menu button (mobile only) -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
+    <!-- Navigation menu with theme/language toggles -->
+    <nav id="navMenu">
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="booking.html" data-i18n="nav_book">Book Now</a>
+        <a href="status.html" data-i18n="nav_status">Check Status</a>
+        <!-- Theme toggle button -->
+        <button class="btn-icon theme-toggle" aria-label="Toggle theme">
+            <svg class="theme-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g class="sun-rays">
+                    <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </g>
+                <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path class="moon-crescent" d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9c.32 0 .63-.02.94-.06A7 7 0 0 1 9 14c0-3.87 3.13-7 7-7 .32 0 .63.02.94.06C16.42 4.56 14.35 3 12 3z" fill="currentColor"/>
+            </svg>
+        </button>
+        <!-- Language toggle button -->
+        <button class="btn-icon lang-toggle">EN | MY</button>
+    </nav>
+</header>
+
+<!-- ==================== STATUS CHECKER CONTAINER ==================== -->
+<div class="container">
+    <!-- Page title -->
+    <h2 data-i18n="status_title">Check Repair Status</h2>
+    
+    <!-- 
+        Status Check Form
+        Submits to status.js which fetches from GET /api/status
+        Requires reference code (from confirmation page) and email verification
+    -->
+    <form id="statusForm">
+        <!-- Reference Code Input -->
+        <label data-i18n="status_ref_label">Reference Code</label>
+        <input type="text" name="ref_code" data-i18n-placeholder="status_ref_placeholder" placeholder="e.g. REF1234" required>
+
+        <!-- Email Verification Input -->
+        <label data-i18n="status_email_label">Email (for verification)</label>
+        <input type="email" name="email" data-i18n-placeholder="status_email_placeholder" placeholder="Enter your email" required>
+
+
+        <!-- Submit Button -->
+        <button type="submit" data-i18n="status_check_btn">Check Status</button>
+    </form>
+
+    <!-- 
+        Status Results Display
+        Initially hidden (CSS: display: none)
+        Populated by status.js after successful API response
+    -->
+    <div id="result">
+        <h3 data-i18n="status_result_title">Status Result:</h3>
+        
+        <!-- Device Information -->
+        <p><strong data-i18n="status_device">Device:</strong> <span id="resDevice"></span></p>
+        
+        <!-- Current Status Badge (Pending/In Progress/Completed) -->
+        <p><strong data-i18n="status_current">Current Status:</strong> <span id="resStatus" class="status-badge"></span></p>
+        
+        <!-- Last Update Timestamp -->
+        <p><strong data-i18n="status_updated">Last Updated:</strong> <span id="resDate"></span></p>
+
+        <!-- Image Gallery Section -->
+        <div class="status-images-section">
+            
+            <!-- Received Condition Images -->
+            <div id="received-images-container" class="image-column" style="display: none;">
+                <h4 data-i18n="stage_received_condition">Received Condition</h4>
+                <div id="received-images-display" class="images-display"></div>
+            </div>
+
+            <!-- After Service Images -->
+            <div id="after-images-container" class="image-column" style="display: none;">
+                <h4 data-i18n="stage_after_service">After Service</h4>
+                <div id="after-images-display" class="images-display"></div>
+            </div>
+        <!-- Image Gallery section end -->
+        </div>
+
+        <!-- Print Ticket Button -->
+        <button id="printBtn" class="primary-btn" style="margin-top: 20px; display: none;" data-i18n="confirm_print">Print Ticket</button>
+    </div>
+</div>
+<!-- End of container -->
+
+<!-- ==================== PRINT ONLY INVOICE ==================== -->
+<div id="print-invoice" style="display: none;">
+    <div class="invoice-header">
+        <div class="company-details">
+        <h1>MyRepairFix</h1>
+        <p>Johor Bahru, Malaysia</p>
+        <p>Support: 01174860640</p>
+            <p>www.myrepairfix.com</p>
+        </div>
+        <div class="invoice-meta">
+            <h2 data-i18n="print_service_status">SERVICE STATUS</h2>
+            <div class="meta-row">
+                <span data-i18n="print_date">Date:</span>
+                <span id="print-date"></span>
+            </div>
+            <div class="meta-row">
+                <span data-i18n="print_ticket_no">Ticket #:</span>
+                <span class="print-ref-code"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="invoice-body">
+        <div class="invoice-section">
+            <h3 data-i18n="print_service_details">Service Details</h3>
+            <div class="meta-row">
+                <span data-i18n="print_device">Device:</span>
+                <span id="print-device"></span>
+            </div>
+            <div class="meta-row">
+                <span data-i18n="print_status">Status:</span>
+                <span id="print-status" style="font-weight: bold;"></span>
+            </div>
+             <div class="meta-row">
+                <span data-i18n="print_last_updated">Last Updated:</span>
+                <span id="print-updated"></span>
+            </div>
+        </div>
+
+        <div class="invoice-section">
+            <div class="ref-box">
+                <span class="label" data-i18n="print_ref_code">Reference Code:</span>
+                <span class="code print-ref-code" ></span>
+            </div>
+            <p class="instruction">
+                <span data-i18n="print_track_future">To track future updates, please visit</span> 
+                <strong>myrepairfix.com/status</strong> 
+                <span data-i18n="print_track_future_end">and use the reference code above.</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="invoice-footer">
+        <p data-i18n="print_thanks">Thank you for choosing MyRepairFix!</p>
+        <p class="small">MyRepairFix &copy; <span id="print-year"></span></p>
+    </div>
+</div>
+
+<!-- ==================== JAVASCRIPT FILES ==================== -->
+<!-- Image component utilities -->
+<script src="js/utils/image-component.js"></script>
+    
+    <!-- ==================== CHATBOT WIDGET ==================== -->
+    <!-- 
+        Floating chatbot helper widget
+        Features:
+        - Fixed position in bottom-right corner
+        - Toggle open/close with 💬 button
+        - Keyword-based auto-responses (hours, price, booking)
+    -->
+    <div id="chatbot-container">
+        <!-- Chatbot toggle button (💬 icon) -->
+        <button id="chatbot-toggle">💬</button>
+        
+        <!-- Chatbot window (hidden by default via CSS) -->
+        <div id="chatbot-window">
+            <!-- Chatbot header with title and close button -->
+            <div class="chatbot-header">
+                <span data-i18n="chatbot_title">MyRepairFix Helper</span>
+                <!-- Close button (✕ symbol) -->
+                <span id="chatbot-close-btn" style="cursor:pointer; float:right;">✕</span>
+            </div>
+            
+            <!-- Message display area -->
+            <div id="chatbot-messages">
+                <!-- Initial greeting message -->
+                <p><strong data-i18n="chatbot_bot">Bot:</strong> <span data-i18n="chatbot_greeting">Hello! How can I help you today?</span></p>
+            </div>
+            
+            <!-- Input area for user messages -->
+            <div class="chatbot-input-area">
+                <!-- Text input for user questions -->
+                <input type="text" id="chat-input" data-i18n-placeholder="chatbot_placeholder" placeholder="Ask about hours, price...">
+                <!-- Send button (triggers sendChat() from global.js) -->
+                <button class="chatbot-send-btn" data-i18n="chatbot_send">Send</button>
+            </div>
+        </div>
+    </div>
+    <!-- End of chatbot-container -->
+
+    <!-- ==================== JAVASCRIPT FILES ==================== -->
+    <!-- Global functionality (theme, language, chatbot) -->
+    <script src="js/data/translations.js"></script>
+    <script src="js/global.js"></script>
+    <!-- Page-specific functionality (status checker API call) -->
+    <script src="js/pages/status.js"></script>
+    
+</body>
+
+</html>
