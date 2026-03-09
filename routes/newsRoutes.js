@@ -20,10 +20,42 @@ router.get('/', async (req, res) => {
 
         // Check if API key exists
         if (!process.env.NEWS_API_KEY) {
-            console.warn('NEWS_API_KEY is missing in environment variables');
-            return res.status(503).json({ 
-                success: false, 
-                message: 'News service temporarily unavailable' 
+            console.warn('NEWS_API_KEY is missing, returning mock data.');
+            return res.json({
+                success: true,
+                isMock: true,
+                articles: [
+                    {
+                        source: { name: "Mock News" },
+                        author: "System",
+                        title: "Latest Tech News Unavailable (API Key Missing)",
+                        description: "Please configure NEWS_API_KEY in your environment variables to see real news.",
+                        url: "#",
+                        urlToImage: "images/logo1.png",
+                        publishedAt: new Date().toISOString(),
+                        content: "This is placeholder content because the News API key is not configured."
+                    },
+                    {
+                        source: { name: "TechCrunch" },
+                        author: "Example Author",
+                        title: "New iPhone 16 Rumors: What to Expect",
+                        description: "Deep dive into the latest leaks and rumors surrounding Apple's upcoming flagship device.",
+                        url: "#",
+                        urlToImage: "https://via.placeholder.com/600x400?text=Tech+News",
+                        publishedAt: new Date().toISOString(),
+                        content: "Lorem ipsum dolor sit amet..."
+                    },
+                    {
+                        source: { name: "The Verge" },
+                        author: "Example Author",
+                        title: "Windows 12: Everything We Know So Far",
+                        description: "Microsoft is reportedly working on a major overhaul for Windows with AI integration.",
+                        url: "#",
+                        urlToImage: "https://via.placeholder.com/600x400?text=Windows+12",
+                        publishedAt: new Date().toISOString(),
+                        content: "Lorem ipsum dolor sit amet..."
+                    }
+                ]
             });
         }
 

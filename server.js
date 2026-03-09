@@ -28,6 +28,8 @@ const MySQLStore = require('express-mysql-session')(session);
 const helmet = require('helmet');
 // Morgan logs every request to the console (useful for debugging).
 const morgan = require('morgan');
+// Compression reduces response sizes to fix HTTP/2 transfer issues on Railway.
+const compression = require('compression');
 
 // --- 3. DATABASE CONNECTION ---
 // Import the database connection pool from our config folder.
@@ -56,6 +58,10 @@ const PORT = process.env.PORT || 3000;
 
 // --- 7. INITIALIZE APP ---
 const app = express();
+
+// --- COMPRESSION ---
+// Compress all responses to fix HTTP/2 transfer issues on Railway.
+app.use(compression());
 
 // --- 8. SECURITY HEADERS (HELMET) ---
 // This configures Content Security Policy (CSP) to only allow safe sources
