@@ -68,8 +68,16 @@ app.use(helmet({
     referrerPolicy: { policy: "no-referrer" }
 }));
 
-// --- 9. GLOBAL MIDDLEWARE SETUP ---
-// Apply these checks to EVERY request used by the server.
+// --- 9. STATIC FILES ---
+// SERVE STATIC FILES FIRST
+// This prevents middleware overhead (sessions, CSRF, DB checks) on static assets (CSS, images, JS).
+app.use(express.static(path.join(__dirname, 'public'), {
+    maxAge: '1d', // Cache static assets for 1 day
+    etag: false
+}));
+
+// --- 10. GLOBAL MIDDLEWARE SETUP ---
+// Apply these checks to APIs and dynamic routes.
 
 // Rate Limiter: Prevent too many requests from one IP (Anti-DDoS).
 // app.use(generalLimiter); 
@@ -132,18 +140,17 @@ app.use(generateCSRFToken);         // Generate a token for every session
 app.use('/api/admin', validateCSRF); // Check token on all admin actions
 app.use('/api/auth', validateCSRF);  // Check token on login/logout actions
 
-// --- 14. CACHE CONTROL ---
+// --- 14. CACHE CONTROL (For API Routes Only) ---
 // Prevent browsers from caching API responses so users always see fresh data.
-app.use((req, res, next) => {
+app.use('/api', (req, res, next) => {
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.set('Pragma', 'no-cache');
     res.set('Expires', '0');
     next();
 });
 
-// --- 15. STATIC FILES ---
-// Serve the frontend files (HTML, CSS, JS) from the 'public' folder.
-app.use(express.static(path.join(__dirname, 'public')));
+// --- 15. STATIC FILES MOVED TO TOP ---
+// (Already handled in section 9)
 
 // ===============================================
 // HEALTH CHECK ENDPOINT
