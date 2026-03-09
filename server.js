@@ -65,10 +65,10 @@ app.use(helmet({
         directives: {
             // Only allow content from our own site by default
             defaultSrc: ["'self'"],
-            // Allow styles from our site, and Google Fonts
-            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            // Allow styles from our site, inline styles, and Google Fonts
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "data:"],
             // Allow fonts from Google
-            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
             // Allow images from our site, data URIs, and any HTTPS/HTTP source
             imgSrc: ["'self'", "data:", "https:", "http:", "blob:"],
             // Allow scripts from our site
