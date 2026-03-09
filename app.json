@@ -1,0 +1,46 @@
+{
+  "name": "MyRepairFix",
+  "description": "A device repair booking and management system",
+  "repository": "https://github.com/yourusername/myrepairfix",
+  "keywords": ["repair", "booking", "express", "mysql"],
+  "env": {
+    "NODE_ENV": {
+      "description": "Set to production",
+      "value": "production"
+    },
+    "SESSION_SECRET": {
+      "description": "Random 64-character string for session encryption",
+      "generator": "secret"
+    },
+    "DB_HOST": {
+      "description": "MySQL database host",
+      "required": true
+    },
+    "DB_USER": {
+      "description": "MySQL database username",
+      "required": true
+    },
+    "DB_PASSWORD": {
+      "description": "MySQL database password",
+      "required": true
+    },
+    "DB_NAME": {
+      "description": "MySQL database name",
+      "value": "myrepairfix_db"
+    },
+    "NEWS_API_KEY": {
+      "description": "NewsAPI key for tech news",
+      "required": false,
+      "value": "f912026010094df2a32c62a11beabd42"
+    },
+    "CORS_ORIGIN": {
+      "description": "Frontend URL for CORS",
+      "required": true
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}

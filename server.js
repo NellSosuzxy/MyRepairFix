@@ -59,15 +59,14 @@ const PORT = process.env.PORT || 3000;
 // --- 7. INITIALIZE APP ---
 const app = express();
 
-// --- COMPRESSION ---
-// Compress all responses to fix HTTP/2 transfer issues on Railway.
-app.use(compression());
+choco install heroku-cli// Trust Railway's reverse proxy (required for correct IP, protocol, cookies)
+app.set('trust proxy', 1);
 
 // --- 8. SECURITY HEADERS (HELMET) ---
 // This configures Content Security Policy (CSP) to only allow safe sources
 // for scripts, images, and styles. It prevents Cross-Site Scripting (XSS).
 app.use(helmet({
-    contentSecurityPolicy: false, // Disable CSP temporarily to fix HTTP/2 issues
+    contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
     xssFilter: true,
     noSniff: true,
@@ -75,12 +74,15 @@ app.use(helmet({
 }));
 
 // --- 9. STATIC FILES ---
-// SERVE STATIC FILES FIRST
-// This prevents middleware overhead (sessions, CSRF, DB checks) on static assets (CSS, images, JS).
+// Serve static files BEFORE compression to avoid HTTP/2 Content-Length mismatch.
+// Railway's edge proxy handles gzip/brotli compression for static assets.
 app.use(express.static(path.join(__dirname, 'public'), {
-    maxAge: '1d', // Cache static assets for 1 day
-    etag: false
+    maxAge: '1d'
 }));
+
+// --- COMPRESSION ---
+// Compress API/dynamic responses (placed AFTER static files intentionally).
+app.use(compression());
 
 // --- 10. GLOBAL MIDDLEWARE SETUP ---
 // Apply these checks to APIs and dynamic routes.
