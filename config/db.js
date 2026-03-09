@@ -22,7 +22,10 @@ const pool = mysql.createPool({
     // Pool settings (leave these as defaults for now)
     waitForConnections: true, // Wait if all workers are busy?
     connectionLimit: 10,      // Max number of simultaneous connections
-    queueLimit: 0             // Max requests to queue (0 = unlimited)
+    queueLimit: 0,            // Max requests to queue (0 = unlimited)
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 // 4. Export the pool so other files (like server.js) can use it
