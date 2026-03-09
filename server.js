@@ -61,29 +61,11 @@ const app = express();
 // This configures Content Security Policy (CSP) to only allow safe sources
 // for scripts, images, and styles. It prevents Cross-Site Scripting (XSS).
 app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            // Only allow content from our own site by default
-            defaultSrc: ["'self'"],
-            // Allow styles from our site, inline styles, and Google Fonts
-            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "data:"],
-            // Allow fonts from Google
-            fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
-            // Allow images from our site, data URIs, and any HTTPS/HTTP source
-            imgSrc: ["'self'", "data:", "https:", "http:", "blob:"],
-            // Allow scripts from our site
-            scriptSrc: ["'self'", "'unsafe-inline'"],
-            // Allow connections (AJAX) to our site, NewsAPI, and Google Fonts
-            connectSrc: ["'self'", "https://newsapi.org", "https://fonts.googleapis.com", "https://fonts.gstatic.com", "https:", "http:"],
-            workerSrc: ["'self'", "blob:"],
-            frameSrc: ["'self'"],
-            objectSrc: ["'none'"],
-            mediaSrc: ["'self'"],
-            manifestSrc: ["'self'"]
-        }
-    },
-    // Allow embedding resources from other origins if needed
-    crossOriginEmbedderPolicy: false
+    contentSecurityPolicy: false, // Disable CSP temporarily to fix HTTP/2 issues
+    crossOriginEmbedderPolicy: false,
+    xssFilter: true,
+    noSniff: true,
+    referrerPolicy: { policy: "no-referrer" }
 }));
 
 // --- 9. GLOBAL MIDDLEWARE SETUP ---
