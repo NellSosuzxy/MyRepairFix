@@ -59,7 +59,7 @@ const PORT = process.env.PORT || 3000;
 // --- 7. INITIALIZE APP ---
 const app = express();
 
-choco install heroku-cli// Trust Railway's reverse proxy (required for correct IP, protocol, cookies)
+// Trust Railway's reverse proxy (required for correct IP, protocol, cookies)
 app.set('trust proxy', 1);
 
 // --- 8. SECURITY HEADERS (HELMET) ---
