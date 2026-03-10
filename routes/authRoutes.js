@@ -104,9 +104,11 @@ router.post('/login',
                 req.session.username = user.username;
                 
                 // Force session save to ensure cookie is set before response
-                req.session.save();
-
-                res.json({ success: true, role: user.role, message: "Login successful" });
+                req.session.save((saveErr) => {
+                    if (saveErr) console.error('[Auth] Session save error:', saveErr);
+                    res.json({ success: true, role: user.role, message: "Login successful" });
+                });
+                return;
             } else {
                 // Wrong password
                 res.json({ success: false, message: "Invalid credentials" });
@@ -210,7 +212,7 @@ router.delete('/delete-staff/:id',
         const staffId = req.params.id;
         
         // Safety check: Prevent owner from deleting themselves
-        if (parseInt(staffId) === req.session.adminId) {
+        if (parseInt(staffId) === req.session.userId) {
             return res.json({ success: false, message: "Cannot delete yourself!" });
         }
         

@@ -109,7 +109,8 @@ const sessionStore = new MySQLStore({
     clearExpired: true,
     checkExpirationInterval: 900000, 
     expiration: 86400000, // Session lasts 24 hours
-    createDatabaseTable: true
+    createDatabaseTable: true,
+    connectionLimit: 2 // Reserve connections for session store within JawsDB limit
 }, pool);
 
 // Configure the session cookie.

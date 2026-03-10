@@ -115,7 +115,7 @@ async function fetchBookings() {
 async function updateStatus(id) {
     const newStatus = document.getElementById(`status-${id}`).value;
     try {
-        const result = await await apiRequest(`/api/admin/bookings/${id}/status`, {
+        const result = await apiRequest(`/api/admin/bookings/${id}/status`, {
             method: 'PATCH',
             body: JSON.stringify({ status: newStatus })
         });

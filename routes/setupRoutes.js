@@ -44,7 +44,7 @@ router.get('/init', async (req, res) => {
             issue_category VARCHAR(50) NOT NULL,
             issue_desc TEXT,
             preferred_date DATE,
-            status ENUM('Pending', 'In-Progress', 'Completed', 'Canceled') DEFAULT 'Pending',
+            status ENUM('Pending', 'Confirmed', 'In-Progress', 'Ready', 'Completed', 'Canceled') DEFAULT 'Pending',
             before_service_images JSON,
             received_condition_images JSON,
             after_service_images JSON,

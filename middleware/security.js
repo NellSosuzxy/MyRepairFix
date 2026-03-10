@@ -8,24 +8,27 @@ const crypto = require('crypto');
 // ::1 = Localhost IPv6
 // 127.0.0.1 = Localhost IPv4
 // 192.168.0.226 = Your current laptop Wi-Fi IP
-const ALLOWED_ADMIN_IPS = ['::1', '127.0.0.1', '192.168.0.226']; // Add your real static IPs here
+// IP restriction is session-based on Heroku (no static IPs behind load balancers).
+// On production, admin access is protected by session auth, not IP whitelist.
+const isProduction = process.env.NODE_ENV === 'production';
+
+const ALLOWED_ADMIN_IPS = ['::1', '127.0.0.1', '192.168.0.226']; // Local dev IPs
 
 const checkIP = (req, res, next) => {
-    // Basic IP extraction (works for local and basic proxies)
-    // For production behind proxies (Nginx/Cloudflare), you might need req.headers['x-forwarded-for']
+    // Skip IP check in production (Heroku) — admin access is protected by session auth
+    if (isProduction) return next();
+
     let clientIP = req.ip || req.connection.remoteAddress;
 
     // Normalize IPv6 mapped IPv4
-    if (clientIP.substr(0, 7) == "::ffff:") {
-        clientIP = clientIP.substr(7);
+    if (clientIP && clientIP.substring(0, 7) === '::ffff:') {
+        clientIP = clientIP.substring(7);
     }
     
-    // Check if path is an admin path
+    // Check if path is an admin path (local dev only)
     if (req.path.startsWith('/api/admin') || req.path.startsWith('/admin.html')) {
         if (!ALLOWED_ADMIN_IPS.includes(clientIP)) {
             console.warn(`[SECURITY] Blocked admin access attempt from IP: ${clientIP}`);
-            // Don't return 403 immediately to avoid revealing admin path exists? 
-            // Or return 403 for honest feedback. User asked for 403.
             return res.status(403).json({ 
                 success: false, 
                 message: 'Forbidden: Access restricted to authorized networks only.' 
@@ -93,7 +96,7 @@ const auditLog = (action, userId, username, details = '', ip = '') => {
     // 2. Log to Database (Primary for UI) - Use async but don't await to avoid blocking response
     if (userId) {
         db.query(
-            'INSERT INTO audit_logs (user_id, username, action, details, ip_address) VALUES (?, ?, ?, ?, ?)',
+            'INSERT INTO audit_logs (admin_id, username, action, detail, ip_address) VALUES (?, ?, ?, ?, ?)',
             [userId, username, action, details, ip],
             (err) => { if (err) console.error('Audit Log DB Error:', err); }
         );
