@@ -59,14 +59,16 @@ router.get('/', async (req, res) => {
             });
         }
 
-        // Fetch new data
+        // Fetch new data (8s timeout — NewsAPI.org blocks production servers on the free
+        // plan and hangs indefinitely, which causes Railway's proxy to return a 503)
         const response = await axios.get('https://newsapi.org/v2/top-headlines', {
             params: {
                 category: 'technology',
                 language: 'en',
                 apiKey: process.env.NEWS_API_KEY,
                 pageSize: 12 // Fetch more to allow filtering for images
-            }
+            },
+            timeout: 8000
         });
 
         // Update cache

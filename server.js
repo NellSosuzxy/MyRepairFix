@@ -28,8 +28,8 @@ const MySQLStore = require('express-mysql-session')(session);
 const helmet = require('helmet');
 // Morgan logs every request to the console (useful for debugging).
 const morgan = require('morgan');
-// Compression reduces response sizes to fix HTTP/2 transfer issues on Railway.
-const compression = require('compression');
+// NOTE: compression is intentionally omitted — Railway's edge proxy (Caddy) handles
+// gzip/brotli compression. Adding it here causes HTTP/2 protocol errors on Railway.
 
 // --- 3. DATABASE CONNECTION ---
 // Import the database connection pool from our config folder.
@@ -80,9 +80,6 @@ app.use(express.static(path.join(__dirname, 'public'), {
     maxAge: '1d'
 }));
 
-// --- COMPRESSION ---
-// Compress API/dynamic responses (placed AFTER static files intentionally).
-app.use(compression());
 
 // --- 10. GLOBAL MIDDLEWARE SETUP ---
 // Apply these checks to APIs and dynamic routes.
