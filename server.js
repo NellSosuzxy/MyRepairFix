@@ -68,16 +68,24 @@ app.set('trust proxy', 1);
 app.use(helmet({
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" },
     xssFilter: true,
     noSniff: true,
     referrerPolicy: { policy: "no-referrer" }
 }));
 
 // --- 9. STATIC FILES ---
-// Serve static files BEFORE compression to avoid HTTP/2 Content-Length mismatch.
-// Railway's edge proxy handles gzip/brotli compression for static assets.
+// Serve static files with correct headers for Railway's reverse proxy.
 app.use(express.static(path.join(__dirname, 'public'), {
-    maxAge: '1d'
+    maxAge: isProduction ? '1h' : 0,
+    etag: true,
+    lastModified: true,
+    setHeaders: (res, filePath) => {
+        // Ensure CSS files always get the correct MIME type
+        if (filePath.endsWith('.css')) {
+            res.setHeader('Content-Type', 'text/css; charset=utf-8');
+        }
+    }
 }));
 
 
