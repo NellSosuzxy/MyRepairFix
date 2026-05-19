@@ -106,6 +106,8 @@ Features:
         Submits to status.js which fetches from GET /api/status
         Requires reference code (from confirmation page) and email verification
     -->
+    <div id="status-error-message" class="error-message" style="display:none; padding: 10px; background-color: #ffebee; color: #c62828; border-radius: 4px; margin-bottom: 15px; border: 1px solid #ef9a9a;"></div>
+    
     <form id="statusForm">
         <!-- Reference Code Input -->
         <label data-i18n="status_ref_label">Reference Code</label>
@@ -138,16 +140,22 @@ Features:
         <p><strong data-i18n="status_updated">Last Updated:</strong> <span id="resDate"></span></p>
 
         <!-- Image Gallery Section -->
-        <div class="status-images-section">
+        <div class="status-images-section" style="display: flex; gap: 20px; flex-wrap: wrap;">
             
-            <!-- Received Condition Images -->
-            <div id="received-images-container" class="image-column" style="display: none;">
+            <!-- Received Condition Images (User Uploaded) -->
+            <div id="received-images-container" class="image-column" style="display: none; flex: 1; min-width: 250px;">
                 <h4 data-i18n="stage_received_condition">Received Condition</h4>
                 <div id="received-images-display" class="images-display"></div>
             </div>
 
-            <!-- After Service Images -->
-            <div id="after-images-container" class="image-column" style="display: none;">
+            <!-- Before Service Images (Staff Uploaded) -->
+            <div id="before-images-container" class="image-column" style="display: none; flex: 1; min-width: 250px;">
+                <h4 data-i18n="stage_before_service">Before Service</h4>
+                <div id="before-images-display" class="images-display"></div>
+            </div>
+
+            <!-- After Service Images (Staff Uploaded) -->
+            <div id="after-images-container" class="image-column" style="display: none; flex: 1; min-width: 250px;">
                 <h4 data-i18n="stage_after_service">After Service</h4>
                 <div id="after-images-display" class="images-display"></div>
             </div>

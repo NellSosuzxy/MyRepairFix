@@ -1744,3 +1744,64 @@ button.loading::after {
         opacity: 0;
     }
 }
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 1rem;
+    max-width: 100%;
+  }
+
+  .hero h2 {
+    font-size: 2.5rem; /* Scale down hero text */
+  }
+}
+
+@media (max-width: 768px) {
+  /* Hide desktop nav */
+  nav {
+    display: none; 
+    /* The JS likely toggles a class to show it, or toggles display. 
+       Need to be careful not to hide it permanently if JS uses display block.
+       Usually mobile menu implementations use a separate class or id.
+       Checking index.html: <button class="hamburger">... <nav id="navMenu">
+       The JS logic (likely in global.js) probably toggles a class on #navMenu.
+       Let's assume the existing CSS for mobile menu is in index.css or style.css further down.
+       I will just adjust container padding here.
+    */
+  }
+
+  /* Show hamburger */
+  .hamburger {
+      display: flex; /* Ensure it is visible on mobile/tablet */
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .hero {
+      padding: 3rem 1rem;
+  }
+  
+  .hero h2 {
+      font-size: 2rem;
+  }
+  
+  .hero p {
+      font-size: 1rem;
+  }
+  
+  /* Make cards stack */
+  .service-card {
+      margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 0.75rem;
+    }
+    
+    .hero h2 {
+        font-size: 1.75rem;
+    }
+}

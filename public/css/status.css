@@ -618,3 +618,8 @@ Dependencies: Requires style.css (loaded first)
     transform: translateY(-2px);
 }
 
+@media (max-width: 640px) {
+    #statusForm {
+        padding: 1.5rem;
+    }
+}

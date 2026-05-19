@@ -10,7 +10,7 @@
 // --- 1. SETUP ON PAGE LOAD ---
 document.addEventListener('DOMContentLoaded', () => {
     // Find the image upload input field
-    const imageInput = document.getElementById('before_service_images');
+    const imageInput = document.getElementById('received_condition_images');
     
     // When user selects files, show previews
     if (imageInput) {
@@ -169,7 +169,7 @@ document.getElementById('bookingForm').addEventListener('submit', async (e) => {
     const formData = new FormData(form);
     
     // Get image files
-    const imageFiles = document.getElementById('before_service_images').files;
+    const imageFiles = document.getElementById('received_condition_images').files;
     
     // Validate images if any were selected
     if (imageFiles.length > 0) {
@@ -185,7 +185,7 @@ document.getElementById('bookingForm').addEventListener('submit', async (e) => {
     }
     
     // Add stage information
-    formData.append('stage', 'before-service');
+    formData.append('stage', 'received-condition');
 
     // ========== STEP 2: Show loading state ==========
     if (typeof setButtonLoading === 'function') {

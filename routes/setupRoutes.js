@@ -56,10 +56,10 @@ router.get('/init', async (req, res) => {
         // 3. Audit Logs Table
         `CREATE TABLE IF NOT EXISTS audit_logs (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            action VARCHAR(50) NOT NULL,
-            admin_id INT,
+            user_id INT,
             username VARCHAR(50),
-            detail TEXT,
+            action VARCHAR(50),
+            details TEXT,
             ip_address VARCHAR(45),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`

@@ -178,23 +178,25 @@ Security Note: This is a basic password system for demo purposes
         Populated dynamically by admin.js from GET /api/admin/bookings
         Shows all customer bookings with update controls
     -->
-    <table>
-        <thead>
-            <tr>
-                <th data-i18n="admin_table_id">ID</th>
-                <th data-i18n="admin_table_date">Date</th>
-                <th data-i18n="admin_table_customer">Customer</th>
-                <th data-i18n="admin_table_device">Device</th>
-                <th data-i18n="admin_table_issue">Issue</th>
-                <th data-i18n="admin_table_status">Status</th>
-                <th data-i18n="admin_table_action">Action</th>
-                <th data-i18n="admin_table_images">Upload</th>
-            </tr>
-        </thead>
-        <!-- Table body populated by JavaScript -->
-        <tbody id="bookingTable">
-        </tbody>
-    </table>
+    <div class="table-container"> 
+        <table>
+            <thead>
+                <tr>
+                    <th data-i18n="admin_table_id">ID</th>
+                    <th data-i18n="admin_table_date">Date</th>
+                    <th data-i18n="admin_table_customer">Customer</th>
+                    <th data-i18n="admin_table_device">Device</th>
+                    <th data-i18n="admin_table_issue">Issue</th>
+                    <th data-i18n="admin_table_status">Status</th>
+                    <th data-i18n="admin_table_action">Action</th>
+                    <th data-i18n="admin_table_images">Upload</th>
+                </tr>
+            </thead>
+            <!-- Table body populated by JavaScript -->
+            <tbody id="bookingTable">
+            </tbody>
+        </table>
+    </div>
 
     <!-- ==================== IMAGE MANAGEMENT MODAL ==================== -->
     <!-- Modal for viewing and uploading images for a specific booking -->

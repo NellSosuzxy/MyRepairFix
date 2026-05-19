@@ -96,9 +96,15 @@ const auditLog = (action, userId, username, details = '', ip = '') => {
     // 2. Log to Database (Primary for UI) - Use async but don't await to avoid blocking response
     if (userId) {
         db.query(
-            'INSERT INTO audit_logs (admin_id, username, action, detail, ip_address) VALUES (?, ?, ?, ?, ?)',
+            'INSERT INTO audit_logs (user_id, username, action, details, ip_address) VALUES (?, ?, ?, ?, ?)',
             [userId, username, action, details, ip],
-            (err) => { if (err) console.error('Audit Log DB Error:', err); }
+            (err) => { 
+                if (err) {
+                    console.error('Audit Log DB Error:', err);
+                } else {
+                    // console.log(`[Audit] Saved to DB: ${action} by ${username}`);
+                }
+            }
         );
     }
 };

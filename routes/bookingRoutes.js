@@ -30,7 +30,7 @@ router.post('/',
     bookingLimiter,
     
     // Step 2: Handle up to 5 image uploads
-    upload.array('before_service_images', 5),
+    upload.array('received_condition_images', 5),
     
     // Step 3: Validate the text fields
     [
@@ -52,7 +52,7 @@ router.post('/',
         // Process uploaded images (if any)
         const imageFiles = req.files || [];
         // Convert file objects to simple URL strings
-        const imagePaths = imageFiles.map(file => `/uploads/before-service/${file.filename}`);
+        const imagePaths = imageFiles.map(file => `/uploads/received-condition/${file.filename}`);
         // Database needs JSON string for list of images
         const imagesJson = JSON.stringify(imagePaths);
         
@@ -60,7 +60,7 @@ router.post('/',
         const refCode = 'REF' + Math.floor(1000 + Math.random() * 9000);
 
         // SQL Command to save everything to database
-        const sql = `INSERT INTO bookings (reference_code, customer_name, email, phone, device_type, device_model, issue_category, issue_desc, preferred_date, before_service_images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const sql = `INSERT INTO bookings (reference_code, customer_name, email, phone, device_type, device_model, issue_category, issue_desc, preferred_date, received_condition_images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
         
         // Run the SQL command
         db.query(sql, [refCode, data.customer_name, data.email, data.phone, data.device_type, data.device_model, data.issue_category, data.issue_desc, data.preferred_date || null, imagesJson], 

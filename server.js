@@ -28,8 +28,8 @@ const MySQLStore = require('express-mysql-session')(session);
 const helmet = require('helmet');
 // Morgan logs every request to the console (useful for debugging).
 const morgan = require('morgan');
-// NOTE: compression is intentionally omitted — Railway's edge proxy (Caddy) handles
-// gzip/brotli compression. Adding it here causes HTTP/2 protocol errors on Railway.
+// Compression reduces response sizes to fix HTTP/2 transfer issues on Railway.
+const compression = require('compression');
 
 // --- 3. DATABASE CONNECTION ---
 // Import the database connection pool from our config folder.
@@ -68,26 +68,21 @@ app.set('trust proxy', 1);
 app.use(helmet({
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: { policy: "cross-origin" },
     xssFilter: true,
     noSniff: true,
     referrerPolicy: { policy: "no-referrer" }
 }));
 
 // --- 9. STATIC FILES ---
-// Serve static files with correct headers for Railway's reverse proxy.
+// Serve static files BEFORE compression to avoid HTTP/2 Content-Length mismatch.
+// Railway's edge proxy handles gzip/brotli compression for static assets.
 app.use(express.static(path.join(__dirname, 'public'), {
-    maxAge: isProduction ? '1h' : 0,
-    etag: true,
-    lastModified: true,
-    setHeaders: (res, filePath) => {
-        // Ensure CSS files always get the correct MIME type
-        if (filePath.endsWith('.css')) {
-            res.setHeader('Content-Type', 'text/css; charset=utf-8');
-        }
-    }
+    maxAge: '1d'
 }));
 
+// --- COMPRESSION ---
+// Compress API/dynamic responses (placed AFTER static files intentionally).
+app.use(compression());
 
 // --- 10. GLOBAL MIDDLEWARE SETUP ---
 // Apply these checks to APIs and dynamic routes.

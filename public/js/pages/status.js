@@ -31,6 +31,11 @@ document.getElementById('statusForm').addEventListener('submit', async (e) => {
 
     // Get the results display container
     const resultDiv = document.getElementById('result');
+    const errorDiv = document.getElementById('status-error-message');
+    
+    // Reset previous error/result
+    if (errorDiv) errorDiv.style.display = 'none';
+    resultDiv.style.display = 'none';
 
     // ========== STEP 3: Display Results or Error ==========
     if (data.success) {
@@ -124,40 +129,39 @@ document.getElementById('statusForm').addEventListener('submit', async (e) => {
 
         // ========== STEP 4: Display Images (if available) ==========
         const receivedContainer = document.getElementById('received-images-container');
+        const beforeContainer = document.getElementById('before-images-container');
         const afterContainer = document.getElementById('after-images-container');
-        
-        // Handle Received Condition Images
-        if (data.booking.received_condition_images && data.booking.received_condition_images.length > 0) {
-            receivedContainer.style.display = 'block';
-            displayUploadedImages(
-                data.booking.received_condition_images, 
-                'received-condition', 
-                'received-images-display', 
-                true // Read only
-            );
-        } else {
-            receivedContainer.style.display = 'none';
-        }
 
-        // Handle After Service Images
-        if (data.booking.after_service_images && data.booking.after_service_images.length > 0) {
-            afterContainer.style.display = 'block';
-            displayUploadedImages(
-                data.booking.after_service_images, 
-                'after-service', 
-                'after-images-display', 
-                true // Read only
-            );
-        } else {
-            afterContainer.style.display = 'none';
-        }
+        // Helper to handle image display or hide container
+        const handleImageDisplay = (images, container, displayId, folder) => {
+            if (images && images.length > 0) {
+                container.style.display = 'block';
+                displayUploadedImages(images, folder, displayId, true);
+            } else {
+                container.style.display = 'none'; // Or show placeholder
+            }
+        };
+        
+        // User Uploaded (Received Condition) - Maps to received_condition_images in DB
+        handleImageDisplay(data.booking.received_condition_images, receivedContainer, 'received-images-display', 'received-condition');
+
+        // Staff Uploaded (Before Service) - Maps to before_service_images in DB
+        handleImageDisplay(data.booking.before_service_images, beforeContainer, 'before-images-display', 'before-service');
+
+        // Staff Uploaded (After Service) - Maps to after_service_images in DB
+        handleImageDisplay(data.booking.after_service_images, afterContainer, 'after-images-display', 'after-service');
 
     } else {
         /**
          * Error occurred (booking not found or email doesn't match)
-         * Show error message and hide results
+         * Show user-friendly error message
          */
-        alert('Error: ' + data.message);
+        if (errorDiv) {
+            errorDiv.style.display = 'block';
+            errorDiv.innerText = "We couldn't find a booking with that reference code and email. Please double-check your details and try again.";
+        } else {
+            alert("We couldn't find a booking with that reference code and email. Please double-check your details and try again.");
+        }
         resultDiv.style.display = 'none';
     }
 });

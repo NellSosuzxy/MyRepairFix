@@ -850,3 +850,241 @@ tbody button:active {
     white-space: nowrap;
 }
 
+
+/* ==================== IPAD / TABLET OPTIMIZATION (NEW) ==================== */
+
+/* --- Header Layout --- */
+.dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.header-top-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- Online Status Badge --- */
+.online-status-container {
+    position: relative;
+    display: inline-block;
+}
+
+.online-badge {
+    background: var(--success-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-right: 1rem;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    user-select: none;
+}
+
+.online-badge:active {
+    transform: scale(0.95);
+}
+
+.online-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.staff-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 200px;
+    z-index: 1000;
+    margin-top: 5px;
+}
+
+.online-staff-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.online-staff-list li {
+    padding: 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+.online-staff-list li:last-child {
+    border-bottom: none;
+}
+
+/* --- Owner Control Panel --- */
+.owner-panel {
+    background: var(--bg-card);
+    padding: 2rem;
+    border-radius: var(--radius);
+    margin-top: 2rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+
+.owner-controls-wrapper {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.owner-control-section {
+    flex: 1;
+}
+
+.owner-control-section.border-left {
+    border-left: 1px solid var(--border);
+    padding-left: 2rem;
+}
+
+.control-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.control-group input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-body);
+    font-size: 0.95rem;
+}
+
+.control-group button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    white-space: nowrap;
+}
+
+.btn-primary { background: var(--primary); color: white; }
+.btn-warning { background: #f59e0b; color: white; }
+
+.status-msg {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    min-height: 1.2em;
+}
+
+/* --- Table Wrapper --- */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    background: var(--bg-card);
+    margin-top: 1rem;
+    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+}
+
+/* Reset table display inside wrapper to ensure it behaves correctly */
+.table-container table {
+    margin: 0;
+    width: 100%;
+    min-width: 900px; /* Ensure columns don't collapse too much */
+    box-shadow: none;
+    display: table; /* Force table display inside wrapper */
+}
+
+/* --- Media Queries for iPad/Tablet (768px - 1024px) --- */
+@media screen and (max-width: 1024px) {
+    /* Optimization 1: Enhanced Touch Targets */
+    tbody td button, 
+    .header-controls button,
+    .control-group button,
+    input, 
+    select {
+        min-height: 48px; /* Touch target size */
+        font-size: 1rem; /* Readable text */
+    }
+
+    /* Optimization 2: Cleaner Layout */
+    body {
+        padding: 1rem; /* Reduce padding on smaller screens */
+    }
+
+    h1 {
+        font-size: 1.75rem;
+        margin-top: 1rem;
+    }
+
+    /* Optimization 3: Owner Panel Stacking */
+    .owner-controls-wrapper {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .owner-control-section.border-left {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--border);
+        padding-top: 1.5rem;
+    }
+
+    .control-group {
+        flex-direction: column; /* Stack inputs vertically */
+    }
+
+    .control-group input, 
+    .control-group button {
+        width: 100%;
+    }
+
+    /* Optimization 4: Table Readability */
+    /* Ensure table wrapper handles scroll */
+    .table-container {
+        margin-bottom: 5rem; /* Space for chatbot/footer */
+    }
+
+    /* Hide less improved styling from previous media queries if needed */
+    /* But actually, we just rely on table-container scrolling now */
+}
+
+/* Special fix for portrait iPad (768px) */
+@media screen and (max-width: 768px) {
+    .header-top-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .header-controls {
+        width: 100%;
+        justify-content: space-between; /* Spread controls */
+    }
+}
